@@ -1,0 +1,261 @@
+
+        :root {
+            --karuneelam-navy: #091224; /* Darker Navy for cinematic feel */
+            --alex-primary: #0077B6;    /* Primary Blue */
+            --alex-secondary: #00B4D8;  /* Secondary Cyan */
+            --alex-light: #CAF0F8;      
+            --alex-dark-text: #3A405A;  
+            --white-color: #ffffff;
+            --light-bg: #F0F0F0;        /* Card background */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            color: var(--alex-dark-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Header Styles --- */
+        header {
+            background-color: var(--karuneelam-navy);
+            color: var(--white-color);
+            padding: 18px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);  
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .container {
+            width: 90%;
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            color: var(--alex-secondary);
+            font-weight: 900;
+            letter-spacing: 1px;
+            cursor: pointer; 
+        }
+        
+        header h1 span {
+            color: var(--white-color);
+            font-weight: 700;
+        }
+        
+
+        /* --- KEYFRAMES for Enhanced Animations --- */
+        @keyframes fadeInScaleUp {
+            from { opacity: 0; transform: translateY(50px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        @keyframes subtleFloat {
+            0% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-2px) scale(1.002); }
+            100% { transform: translateY(0px) scale(1); }
+        }
+        
+        @keyframes fieldEntrance {
+             from { opacity: 0; transform: translateX(-20px); }
+             to { opacity: 1; transform: translateX(0); }
+        }
+        
+        /* --- REGISTRATION FORM SPECIFIC STYLES --- */
+        .reg-wrapper {
+            padding: 60px 0;
+            min-height: 100vh; 
+            /* *** BACKGROUND IMAGE HERE: REPLACE with your actual image file name or URL *** */
+            background: url('123.jpg') no-repeat center center; 
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            perspective: 1500px;
+            overflow: hidden;
+        }
+
+        /* Cinematic Background Effects (same as before - very attractive) */
+        .reg-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9); 
+            z-index: 1;
+        }
+        .reg-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 180, 216, 0.15) 0%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0.9));
+            z-index: 2; 
+            pointer-events: none; 
+        }
+
+        .reg-card {
+            background: var(--white-color);
+            width: 90%;
+            max-width: 750px; 
+            border-radius: 20px; 
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 0 0 8px rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            border-top: 6px solid var(--alex-primary);
+            position: relative; 
+            z-index: 10; 
+            
+            /* Enhanced Card Entrance Animation */
+            opacity: 0; 
+            animation: fadeInScaleUp 1s cubic-bezier(0.25, 1, 0.3, 1) forwards;
+            
+            transform-style: preserve-3d;
+            transition: transform 0.4s ease-out; 
+        }
+
+        .reg-card:hover {
+            transform: translateY(-5px) scale(1.005); 
+        }
+
+        .reg-header {
+            background-color: var(--karuneelam-navy);
+            padding: 25px 30px 20px;
+            text-align: center;
+            color: var(--white-color);
+            animation: subtleFloat 3s ease-in-out infinite; 
+        }
+        
+        .reg-header h2 {
+            margin: 0;
+            font-size: 2.2em; 
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            font-weight: 900;
+        }
+
+        .reg-header p {
+            margin: 8px 0 0;
+            color: var(--alex-secondary);
+            font-weight: 700;
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+        }
+
+        .form-content {
+            padding: 35px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px 40px; 
+        }
+
+        /* Applying the Staggered Animation to all form groups */
+        .form-group, .form-section-title, .submit-btn {
+            opacity: 0;
+            animation: fieldEntrance 0.5s ease-out forwards;
+        }
+        /* Staggered Delay - Adjust based on number of fields */
+        .form-group:nth-child(1), .form-section-title:nth-child(1) { animation-delay: 0.8s; }
+        .form-group:nth-child(2) { animation-delay: 0.9s; }
+        .form-group:nth-child(3) { animation-delay: 1.0s; }
+        .form-group:nth-child(4) { animation-delay: 1.1s; }
+        .form-section-title:nth-child(5) { animation-delay: 1.2s; }
+        .form-group:nth-child(6) { animation-delay: 1.3s; }
+        .form-group:nth-child(7) { animation-delay: 1.4s; }
+        .form-group:nth-child(8) { animation-delay: 1.5s; }
+        .form-section-title:nth-child(9) { animation-delay: 1.6s; }
+        .form-group:nth-child(10) { animation-delay: 1.7s; }
+        .form-group:nth-child(11) { animation-delay: 1.8s; }
+        .form-section-title:nth-child(12) { animation-delay: 1.9s; }
+        .form-group:nth-child(13) { animation-delay: 2.0s; }
+        .form-group:nth-child(14) { animation-delay: 2.1s; }
+        .submit-btn { animation-delay: 2.2s; } 
+        
+        /* General form layout styles (rest remains same) */
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-section-title {
+            grid-column: span 2;
+            font-size: 1.2em; 
+            color: var(--alex-primary);
+            border-bottom: 3px solid var(--alex-light); 
+            padding-bottom: 12px;
+            margin-top: 30px; 
+            margin-bottom: 20px; 
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .form-section-title i {
+            margin-right: 10px;
+            color: var(--alex-secondary);
+            font-size: 1.1em;
+        }
+        .form-section-title:first-child {
+            margin-top: 0; 
+        }
+
+        /* Input/Label styles (same as before) */
+        .form-group { position: relative; margin-top: 5px; margin-bottom: 10px; }
+        .form-group label { position: absolute; top: 18px; left: 15px; pointer-events: none; font-weight: 600; color: #888; font-size: 0.9em; transition: all 0.2s ease-out; background: transparent; z-index: 1; }
+        .form-group input:focus + label, .form-group input:not(:placeholder-shown) + label,
+        .form-group select:focus + label, .form-group select:not([value=""]) + label,
+        .form-group textarea:focus + label, .form-group textarea:not(:placeholder-shown) + label,
+        .form-group input[type="date"]:valid + label { top: -12px; left: 10px; font-size: 0.78em; color: var(--alex-primary); font-weight: 800; padding: 0 5px; background: var(--white-color); }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 18px 15px 10px 15px; border: 2px solid #ddd; border-radius: 12px; font-family: 'Montserrat', sans-serif; font-size: 1em; background-color: var(--white-color); transition: all 0.2s ease; -webkit-appearance: none; -moz-appearance: none; appearance: none;
+        }
+        
+        .form-group select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='%230077B6' d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px top 50%;
+            background-size: 0.8em;
+            padding-right: 30px;
+        }
+
+        /* Submit Button Style (same as before) */
+        .submit-btn { grid-column: span 2; background: linear-gradient(90deg, var(--alex-primary) 0%, var(--alex-secondary) 100%); background-size: 200% auto; color: var(--white-color); padding: 20px; border: none; border-radius: 35px; font-size: 1.3em; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-top: 30px; box-shadow: 0 10px 30px rgba(0, 119, 182, 0.3); transition: all 0.3s ease; letter-spacing: 2px; }
+        .submit-btn:hover { background-position: right center; transform: translateY(-5px) scale(1.01); box-shadow: 0 18px 45px rgba(0, 119, 182, 0.5); }
+        .submit-btn i { transition: transform 0.3s ease; }
+        .submit-btn:hover i { transform: translateX(8px) rotate(5deg); }
+        
+        /* Footer Style (same as before) */
+        footer { background-color: var(--karuneelam-navy); color: var(--alex-light); padding: 15px 0; text-align: center; font-size: 0.85em; border-top: 4px solid var(--alex-secondary); }
+
+        /* Responsive */
+        @media (max-width: 800px) {
+            .reg-card { max-width: 95%; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); }
+            .form-grid { grid-template-columns: 1fr; gap: 5px; }
+            .form-group.full-width, .submit-btn, .form-section-title { grid-column: span 1; }
+            .form-content { padding: 25px 20px; }
+            .reg-header h2 { font-size: 1.8em; }
+            .reg-card { transform: none !important; }
+            
+            /* Reset staggered animation for mobile for better performance */
+            .form-group, .form-section-title, .submit-btn {
+                animation: fadeInScaleUp 0.5s ease-out forwards !important;
+                animation-delay: 0.5s !important; /* Start all together after card load */
+            }
+        }

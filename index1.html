@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Driving School - The Light Standard in Driving Education</title>
+    <meta name="description" content="Alex Driving School offers a modern, simplified system for license applications, instructor management, and real-time progress tracking in a standard deep blue theme.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> 
+
+    <style>
+        /* 1. Global Setup - Revised Theme with Karuneelak (Navy) and Deep Blue/Yellow Accents */
+        :root {
+            --karuneelam-navy: #0A1931;        /* Deep Authority Navy (Keep) */
+            --alex-primary: #005691;           /* Strong Professional Blue (NEW PRIMARY) */
+            --alex-secondary: #FFC300;         /* Vivid Yellow/Gold (NEW SAFETY ACCENT) */
+            --alex-light: #FFF3C4;             /* Very Light Yellow/Cream (NEW LIGHT ACCENT) */
+            --alex-dark-text: #3A405A;         /* Dark Grey Text */
+            --white-color: #ffffff;
+            --light-bg: #F5F5F5;               /* Off-White Background */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            color: var(--alex-dark-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* A11y Enhancement: Skip to content link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--alex-secondary); /* Yellow */
+            color: var(--karuneelam-navy);
+            padding: 8px;
+            z-index: 9999;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 0 0 5px 0;
+            transition: top 0.3s ease-in-out;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+        /* End A11y */
+
+        .container {
+            width: 90%;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 25px 0;
+        }
+
+        /* 2. Header & Navigation - KARUNEELAK (NAVY BLUE) */
+        header {
+            background-color: var(--karuneelam-navy); 
+            color: var(--white-color);
+            padding: 18px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            color: var(--alex-secondary); /* Yellow Accent */
+            font-weight: 900;
+            letter-spacing: 1px;
+            transition: all 0.4s ease-out;
+            cursor: pointer;
+        }
+
+        header h1 span {
+            color: var(--white-color);
+            font-weight: 700;
+        }
+
+        header h1:hover {
+            transform: scale(1.1) rotate(0deg);
+            color: var(--alex-light); /* Light Yellow Hover */
+            text-shadow: 0 0 10px rgba(255, 195, 0, 0.7); /* Yellow Shadow */
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav ul li a {
+            color: var(--white-color);
+            text-decoration: none;
+            padding: 12px 18px; 
+            display: block;
+            border-radius: 30px;
+            transition: all 0.4s ease-in-out;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            white-space: nowrap; 
+        }
+
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: -1;
+        }
+
+        nav ul li a:hover::before {
+            left: 100%;
+        }
+
+        nav ul li a:hover {
+            background-color: var(--alex-primary); /* Deep Blue Hover */
+            color: var(--alex-light); /* Light Yellow Text */
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 3. Hero Section (No picture color change) */
+        .hero {
+            /* NOTE: For image to show, replace 'i.jpg' with an actual path/URL */
+            background: url('i.jpg') no-repeat center center/cover;
+            color: var(--white-color); 
+            text-align: center;
+            padding: 180px 20px;
+            height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInScale 2s ease-out;
+            position: relative;
+            overflow: hidden;
+            filter: none; 
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3); 
+            box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            position: relative;
+            z-index: 2; 
+        }
+
+        .hero h2 {
+            font-size: 5.2em;
+            margin-bottom: 25px;
+            font-weight: 900; 
+            line-height: 1.1;
+            text-shadow: 4px 4px 10px rgba(0,0,0,0.9), 0 0 20px var(--alex-primary); /* Deep Blue Shadow */
+            animation: slideDownFade 1.5s ease-out forwards;
+            color: var(--white-color); 
+        }
+
+        .hero p {
+            font-size: 2em;
+            margin-bottom: 60px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 2px 2px 5px rgba(0,0,0,1);
+            animation: slideUpFade 1.5s ease-out forwards;
+            color: var(--white-color); 
+            font-weight: 600;
+        }
+        
+        .cta-group {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        /* CTA Buttons */
+        .cta-button-gold {
+            display: inline-block;
+            background: var(--karuneelam-navy); 
+            color: var(--white-color); 
+            padding: 20px 50px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.4em; 
+            font-weight: 800;
+            border: 3px solid var(--alex-secondary); /* Yellow Accent Border */
+            cursor: pointer;
+            transition: all 0.4s ease-in-out;
+            animation: pulseLight 2.5s infinite; 
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .cta-button-gold:hover {
+            background: var(--alex-primary); /* Deep Blue Hover */
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 86, 145, 0.5); /* Deep Blue Shadow */
+            color: var(--white-color); 
+            animation: none;
+        }
+        
+        .cta-button-blue {
+            display: inline-block;
+            background: var(--white-color); 
+            color: var(--alex-dark-text);
+            padding: 20px 50px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.4em; 
+            font-weight: 800;
+            border: 3px solid var(--alex-primary); /* Deep Blue Border */
+            cursor: pointer;
+            transition: all 0.4s ease-in-out;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button-blue:hover {
+            background: var(--alex-light); /* Light Yellow Hover */
+            color: var(--karuneelam-navy); /* Dark Text on Hover */
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 0 15px var(--alex-primary); /* Deep Blue Shadow */
+        }
+
+
+        /* 4. Features Section - CARD COLORS (NEW YELLOW/BLUE ACCENT) */
+        .features {
+            padding: 120px 0;
+            text-align: center;
+            background-color: var(--white-color); 
+        }
+
+        .features h3 {
+            font-size: 4em;
+            margin-bottom: 70px;
+            color: var(--alex-dark-text); 
+            font-weight: 900;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .features h3::after {
+            content: '';
+            display: block;
+            width: 150px;
+            height: 7px;
+            background: linear-gradient(90deg, var(--alex-primary), var(--alex-secondary)); /* Blue to Yellow Gradient */
+            margin: 25px auto 0;
+            border-radius: 4px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 30px; 
+            margin-top: 50px;
+        }
+
+        .feature-item {
+            background-color: var(--light-bg); 
+            padding: 25px; 
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+            text-align: left;
+            border: 2px solid transparent;
+            transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            opacity: 0;
+            transform: translateY(50px) perspective(1200px);
+            cursor: pointer;
+            position: relative; 
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .feature-item::after { 
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--alex-primary); /* Deep Blue */
+            transition: width 0.4s ease-out;
+        }
+        
+        .feature-item:hover {
+            box-shadow: 0 15px 40px rgba(0, 86, 145, 0.25), 0 0 10px var(--alex-primary); /* Deep Blue Shadow */
+            transform: translateY(-10px) rotateX(3deg) scale(1.02) perspective(1200px); 
+            background-color: var(--white-color);
+            border: 2px solid var(--alex-primary); /* Deep Blue Border */
+        }
+
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            transform: skewX(-25deg);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 1;
+        }
+
+        .feature-item:hover::before {
+            left: 120%;
+        }
+
+        .feature-item-image {
+            width: 100%; 
+            height: 150px; 
+            object-fit: cover; 
+            border-radius: 12px;
+            margin-bottom: 20px; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            transition: transform 0.5s ease-out, box-shadow 0.5s ease-out;
+            border: 2px solid var(--alex-light); /* Light Yellow Border */
+        }
+
+        .feature-item:hover .feature-item-image {
+            transform: scale(1.05); 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 0 10px var(--alex-primary); 
+        }
+
+        .feature-item h4 {
+            color: var(--alex-primary); /* Deep Blue */
+            margin-top: 0;
+            font-size: 1.5em; 
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+            margin-bottom: 15px; 
+            letter-spacing: 0.8px;
+        }
+
+        .feature-item h4 span {
+            font-size: 1.2em; 
+            color: var(--alex-secondary); /* Yellow Accent */
+            text-shadow: 1px 1px 5px rgba(0, 86, 145, 0.5); /* Deep Blue Shadow */
+        }
+
+        .feature-item p {
+            font-size: 1em; 
+            color: var(--alex-dark-text); 
+            flex-grow: 1; 
+            line-height: 1.6; 
+        }
+        
+        /* 5. Map & Animation Section Styling */
+        .location-map {
+            padding: 100px 0;
+            background-color: var(--light-bg);
+            text-align: center;
+        }
+        
+        .location-map h3 {
+            font-size: 3.5em;
+            margin-bottom: 50px;
+            color: var(--alex-dark-text);
+            font-weight: 900;
+            position: relative;
+            text-transform: uppercase;
+        }
+
+        .location-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px; 
+            padding: 20px;
+        }
+
+        .car-animation-container {
+            width: 500px;
+            height: 500px;
+            background: var(--light-bg); 
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; 
+            perspective: 1000px; 
+        }
+
+        .animated-car-image {
+            /* NOTE: For image to show, replace 'car2.jpg' with an actual path/URL */
+            position: absolute;
+            bottom: 5%; 
+            left: 50%;
+            transform: translateX(-50%) rotateZ(0deg) scale(1.0); 
+            width: 500px; 
+            height: auto;
+            object-fit: contain;
+            animation: floatSimple 4s ease-in-out infinite alternate; 
+            transform-origin: bottom center; 
+            z-index: 2;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.4));
+        }
+        
+        /* Map box styles */
+        .map-box {
+            width: 500px;
+            height: 500px;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-box iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* 6. Footer - KARUNEELAK (NAVY BLUE) */
+        footer {
+            background-color: var(--karuneelam-navy); 
+            color: var(--white-color);
+            text-align: center;
+            padding: 35px 0;
+            margin-top: 0; 
+            font-size: 1.05em;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        footer p {
+            margin: 0;
+            letter-spacing: 0.8px;
+            color: var(--white-color);
+        }
+
+        /* 7. Animations (keyframes) */
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideDownFade {
+            from { opacity: 0; transform: translateY(-100px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(100px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Light Pulse Animation (Updated to use Yellow/Gold) */
+        @keyframes pulseLight { 
+            0% { transform: scale(1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); }
+            50% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(255, 195, 0, 0.5); } /* Yellow pulse shadow */
+            100% { transform: scale(1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); }
+        }
+        
+        @keyframes floatSimple {
+            0% {
+                transform: translate(-50%, 0px) scale(1.0);
+            }
+            50% { 
+                transform: translate(-50%, -15px) scale(1.02);
+            }
+            100% {
+                transform: translate(-50%, 0px) scale(1.0);
+            }
+        }
+        
+        .animate-in {
+            animation: slideUpFade 1.2s ease-out forwards;
+        }
+        
+        /* 8. Responsiveness (Media Queries) */
+        @media (max-width: 1200px) {
+            nav ul li a { padding: 12px 15px; font-size: 0.9em; } 
+        }
+        
+        @media (max-width: 1024px) {
+            .hero h2 { font-size: 4em; }
+            .hero p { font-size: 1.8em; }
+            .features h3 { font-size: 3.5em; }
+            .cta-group { flex-direction: column; gap: 15px; }
+            .cta-button-gold, .cta-button-blue { padding: 15px 30px; font-size: 1.2em; width: 80%; max-width: 400px; margin: 0 auto; }
+            nav ul li a { padding: 10px 12px; }
+            
+            .location-section {
+                flex-direction: column; 
+                align-items: center; 
+            }
+            .map-box, .car-animation-container {
+                width: 90%; 
+                height: 300px; 
+            }
+            .animated-car-image { 
+                width: 180px; 
+            }
+        }
+
+        @media (max-width: 768px) {
+            header .container { flex-direction: column; text-align: center; }
+            nav ul { margin-top: 25px; justify-content: center; flex-wrap: wrap; }
+            nav ul li a { padding: 8px 10px; font-size: 0.8em; }
+            .hero { padding: 120px 15px; height: 600px; }
+            .hero h2 { font-size: 3.2em; }
+            .hero p { font-size: 1.5em; margin-bottom: 30px; }
+            .cta-button-gold, .cta-button-blue { font-size: 1.1em; width: 90%; max-width: none; }
+            .features h3 { font-size: 2.8em; margin-bottom: 50px; }
+            .feature-grid { grid-template-columns: 1fr; gap: 35px; }
+            .map-box { height: 400px; }
+            .animated-car-image { 
+                width: 150px; 
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 { font-size: 1.8em; }
+            .hero { padding: 80px 10px; height: 500px; }
+            .hero h2 { font-size: 2.5em; }
+            .hero p { font-size: 1.2em; margin-bottom: 20px; }
+            .cta-button-gold, .cta-button-blue { font-size: 1em; padding: 10px 20px; }
+            .location-map h3 { font-size: 2.2em; }
+            .map-box, .car-animation-container { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header role="banner">
+        <div class="container">
+            <h1>Alex <span>Driving School</span></h1> 
+            <nav role="navigation" aria-label="Main Navigation">
+                <ul>
+                    <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#features"><i class="fas fa-check-circle"></i> Features</a></li>
+                    <li><a href="#apply"><i class="fas fa-file-alt"></i> Apply Now</a></li> 
+                    <li><a href="#contact"><i class="fas fa-phone-alt"></i> Contact</a></li>
+                    <li><a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h2>Your Path to a Driving License, Simplified!</h2>
+                <p>Our **Driving School Management System** streamlines the process of obtaining your license, offering online applications, instructor management, and real-time updates.</p>
+                
+                <div class="cta-group">
+                    <a href="#apply" class="cta-button-gold">Apply Now! <i class="fas fa-arrow-right"></i></a>
+                    <a href="#apply" class="cta-button-blue">Check Application <i class="fas fa-search"></i></a> 
+                </div>
+                
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <h3>Why Choose Alex Driving School?</h3>
+                <div class="feature-grid">
+                    <div class="feature-item" style="animation-delay: 0.1s;">
+                        <img src="1.png" alt="Online Application Form" class="feature-item-image"> 
+                        <h4><span><i class="fas fa-laptop-code"></i></span> Online Application</h4>
+                        <p>Students can conveniently **apply for driving courses** and manage their profiles through our intuitive online portal.</p>
+                    </div>
+                    <div class="feature-item" style="animation-delay: 0.3s;">
+                        <img src="2.png" alt="Driving Courses Offered" class="feature-item-image"> 
+                        <h4><span><i class="fas fa-road"></i></span> Driving Courses Offered</h4>
+                        <p>Explore a variety of **driving courses tailored to your needs**, from beginner lessons to advanced defensive driving techniques.</p>
+                    </div>
+                    <div class="feature-item" style="animation-delay: 0.5s;">
+                        <img src="3.png" alt="Test Preparation Resources" class="feature-item-image"> 
+                        <h4><span><i class="fas fa-book-reader"></i></span> Test Preparation</h4>
+                        <p>Access **comprehensive study materials**, practice tests, and expert tips to ace your driving license exams with confidence.</p>
+                    </div>
+                    <div class="feature-item" style="animation-delay: 0.7s;">
+                        <img src="4.png" alt="Progress Tracking" class="feature-item-image"> 
+                        <h4><span><i class="fas fa-chart-line"></i></span> Progress Tracking</h4>
+                        <p>Monitor your **learning journey with detailed progress reports**, lesson summaries, and performance insights to stay on track.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section class="location-map" id="contact">
+            <div class="container">
+                <h3>Find Our Clean Location & Watch Our Progress</h3>
+                
+                <div class="location-section">
+
+                    <div class="car-animation-container" id="car-box">
+                         <img src="car2.jpg" class="animated-car-image" alt="Animated Car on Road" id="car-photo">
+                    </div>
+
+                    <div class="map-box">
+                        <iframe
+                            src="https://www.google.com/maps?q=batticaloa&z=13&output=embed"
+                            allowfullscreen=""
+                            loading="lazy"
+                            title="Alex Driving School Location Map"
+                            sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                            >
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="apply" class="features" style="background-color: var(--alex-light); padding: 50px 0; border-top: 5px solid var(--alex-primary);">
+            <div class="container">
+                <h3 style="color: var(--karuneelam-navy); margin-bottom: 30px;">Start Your Journey: Online Application Form</h3>
+                <p style="font-size: 1.2em; color: var(--alex-dark-text);">*The application form content would go here, which can be linked from the 'Apply Now!' button.*</p>
+            </div>
+        </section>
+
+        <hr>
+    </main>
+
+    <footer role="contentinfo">
+        <div class="container">
+            <p>© 2025 Alex Driving School - The Light Standard in Driving Education. All rights reserved.</p>
+            <p>Contact Us: +123 456 7890 | Email: info@alexdrivingschool.com</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for scroll-triggered animations on feature items
+        const featureItems = document.querySelectorAll('.feature-item');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, { threshold: 0.2, rootMargin: "0px 0px -50px 0px" }); 
+
+        featureItems.forEach(item => {
+            observer.observe(item);
+        });
+    </script>
+</body>
+</html>

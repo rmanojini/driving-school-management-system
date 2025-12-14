@@ -1,0 +1,152 @@
+        /* Theme Variables for Final Style */
+        :root {
+            --dark-background: #0D1B2A;       /* Almost Black/Dark Navy */
+            --glow-blue-primary: #0077B6;     /* Deep Blue for Glow/Accent */
+            --glow-blue-secondary: #00B4D8;   /* Lighter Blue for Glow/Accent */
+            --card-bg-opacity: 0.15;          /* Transparency level for the card */
+            --text-light: #f0f8ff;            /* Almost White text */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            
+            /* Background Gradient: Dark to Darker Blue, mimicking the image */
+            background: linear-gradient(135deg, #0d1e37 0%, var(--dark-background) 100%);
+            position: relative;
+            /* Add subtle glow around the edges of the page */
+            box-shadow: inset 0 0 100px rgba(0, 119, 182, 0.2);
+            z-index: 1;
+        }
+        
+        /* Login Card Container - GLASSMORPHISM */
+        .login-container {
+            /* White with opacity for the glass effect */
+            background: rgba(255, 255, 255, var(--card-bg-opacity)); 
+            backdrop-filter: blur(12px); /* Strong blur effect */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Very subtle white border */
+            padding: 50px 40px;
+            border-radius: 25px; /* Highly rounded corners */
+            /* Subtle blueish box shadow */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 119, 182, 0.3); 
+            width: 90%;
+            max-width: 450px;
+            animation: fadeIn 1.2s ease-out;
+            position: relative;
+            z-index: 3;
+        }
+
+        /* Header/Title - NEON GLOW */
+        .login-container h2 {
+            font-size: 2.5em;
+            margin-bottom: 5px;
+            color: var(--text-light); 
+            font-weight: 800;
+            /* Strong Neon Glow based on the picture */
+            text-shadow: 0 0 15px var(--glow-blue-secondary), 0 0 30px var(--glow-blue-primary);
+        }
+        
+        .login-container p.subtitle {
+            font-size: 1.1em;
+            color: var(--glow-blue-secondary);
+            margin-bottom: 35px;
+            font-weight: 500;
+        }
+
+        /* Form Styling */
+        .login-form .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-light); 
+            font-size: 1em;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 15px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle white border */
+            border-radius: 12px; /* Rounded input fields */
+            font-size: 1.05em;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.08); /* Very low transparency background */
+            color: var(--text-light);
+            transition: all 0.4s;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .login-form input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .login-form input:focus {
+            background: rgba(255, 255, 255, 0.15); 
+            border-color: var(--glow-blue-secondary);
+            /* Focus Glow */
+            box-shadow: 0 0 10px var(--glow-blue-secondary), inset 0 0 8px rgba(0, 0, 0, 0.5); 
+            outline: none;
+        }
+
+        /* Login Button - Gradient and Glow */
+        .login-btn {
+            /* Blue Gradient fill */
+            background: linear-gradient(90deg, var(--glow-blue-primary), var(--glow-blue-secondary)); 
+            color: var(--text-light);
+            padding: 16px 25px;
+            border: none;
+            border-radius: 30px; /* Highly rounded button */
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            width: 80%; /* Slightly narrower button as seen in the picture */
+            margin-top: 30px;
+            transition: all 0.4s ease-in-out;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            /* Strong Button Glow */
+            box-shadow: 0 0 10px var(--glow-blue-secondary), 0 0 30px var(--glow-blue-primary); 
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(90deg, var(--glow-blue-secondary), var(--glow-blue-primary)); 
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--text-light), 0 0 40px var(--glow-blue-secondary);
+        }
+
+        /* Links Section (Hidden/Simplified as not prominent in the image) */
+        .links-section {
+            display: none; /* Hiding additional links to match the clean look of the picture */
+        }
+
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px) scale(0.85); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Responsiveness */
+        @media (max-width: 500px) {
+            .login-container {
+                padding: 40px 25px;
+            }
+            .login-container h2 {
+                font-size: 2.2em;
+            }
+            .login-btn {
+                width: 90%;
+            }
+        }

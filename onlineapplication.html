@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration - Alex Driving School</title>
+    <meta name="description" content="High-impact Student Registration Form with Cinematic Material Design principles and enhanced animations.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> 
+    <link rel="stylesheet" type="text/css" href="registration.css">
+
+   
+</head>
+<body>
+
+    <header role="banner">
+        <div class="container">
+            <h1 onclick="window.location.href='index.html'">Alex <span>Driving School</span></h1> 
+        </div>
+    </header>
+
+    <main>
+        <section class="reg-wrapper">
+            <div class="reg-card" id="registrationCard">
+                <div class="reg-header">
+                    <h2>Student Registration Portal</h2>
+                    <p>Start your driving journey with us today!</p>
+                </div>
+                
+                <div class="form-content">
+                    <form action="#" method="POST">
+                        <div class="form-grid">
+                            
+                            <div class="form-section-title"><i class="fas fa-user-circle"></i>Student's Personal Details</div>
+
+                            <div class="form-control form-control-lg">
+                                <input type="text" id="student_name" name="student_name" placeholder=" " required>
+                                <label for="student_name">Full Name</label>
+                            </div>
+                            
+                            <div class="form-control form-control-lg">
+                                <input type="date" id="dob" name="dob" placeholder=" " required>
+                                <label for="dob">Date of Birth</label>
+                            </div>
+
+                            <div class="form-control form-control-lg">
+                                <input type="" id="dob" name="Age" placeholder=" " required>
+                                <label for="">Age</label>
+                            </div>
+
+                            <div>
+                               <label class="form-control form-control-lg">Gender</label>
+                                <input class="form-control form-control-lg" type="radio" name="gender" value="Male">Male
+                                <input class="form-control form-control-lg" type="radio" name="gender" value="Female">Female
+
+                            </div>
+
+                            <div class="form-control form-control-lg">
+                                <input type="text" id="nic" name="nic" placeholder=" " required>
+                                <label for="nic">National ID Card </label>
+                            </div>
+
+                           
+                            <div class="form-control form-control-lg">
+                                <input type="email" id="email" name="email" placeholder=" " required>
+                                <label for="email">Email Address</label>
+                            </div>
+                            
+                            <div class="form-control form-control-lg">
+                                <input type="tel" id="phone1" name="phone1" pattern="[0-9]{10}" placeholder=" " required>
+                                <label for="phone">Mobile Number (10 Digits)</label>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <textarea id="address" name="address" rows="3" placeholder=" " required></textarea>
+                                <label for="address">Full Residential Address</label>
+                            </div>
+
+
+                            <div class="form-control form-control-lg">
+                                <input type="date" id="reg_date" name="reg_date" value="2025-12-08" placeholder=" " required>
+                                <label for="reg_date">Registered Date</label>
+                            </div>
+                            
+                            <div class="form-control form-control-lg">
+                                <select id="vehicle_class" name="vehicle_class" required>
+                                     <option value="" disabled selected></option>
+                                     <option value="A">A - Motor Cycles (Motorbikes)</option>
+                                     <option value="B">B - Motor Cars / Van</option>
+                                     <option value="B1">B1 - Motor Tricycles (Three Wheelers)</option>
+                                     <option value="G">G - Land Vehicles (Tractors / Agricultural)</option>
+                                     <option value="D">D - Heavy Motor Vehicles (Lorry / Bus)</option>
+                                     <option value="AB1">AB1 - Combo: A (Motor Cycles) & B1 (Tricycles)</option>
+                                     <option value="AB1B">AB1B - Combo: A, B1, and B (Motor Cars)</option>
+                                     <option value="AB1BG">AB1BG - Combo: A, B1, B, and G (All listed Light/Medium Classes)</option>
+                                     <option value="AB">AB - Combo: A (Motor Cycles) & B (Motor Cars)</option>
+                                </select>
+                                <label for="vehicle_class">Class Of Vehicle</label>
+                            </div>
+
+
+                            <button type="submit" class="submit-btn">
+                                REGISTRATION <i class="fas fa-check-circle" style="margin-left: 10px;"></i>
+                            </button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <div class="container">
+            <p>© 2025 Alex Driving School - The Light Standard in Driving Education.</p>
+        </div>
+    </footer>
+    
+    
+
+</body>
+</html>

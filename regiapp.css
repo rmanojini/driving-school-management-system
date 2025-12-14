@@ -1,0 +1,63 @@
+
+    body {
+        background: #f3f5f9;
+        font-family: 'Poppins', sans-serif;
+    }
+    .left-panel {
+        background: #022350;
+        color: #fff;
+        padding: 30px;
+        border-radius: 12px 0 0 12px;
+    }
+    .step-box {
+        background: #fff;
+        color: #000;
+        border-radius: 12px;
+        padding: 15px;
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .step-number {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #022350;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: #fff;
+    }
+    /* Custom style for radio buttons to ensure proper spacing and alignment */
+    .form-check-inline {
+        margin-right: 1.5rem; 
+    }
+    
+    /* --- FONT SIZE INCREASE --- */
+    .form-label, .form-control, .form-select, .form-check-label {
+        font-size: 1rem; 
+    }
+
+    /* Navy Blue Color for Heading */
+    .text-navy {
+        color: #022350 !important;
+    }
+
+    /* --- COMMON BUTTON STYLES (Solid Navy Blue with Hover) --- */
+    .btn-solid-navy {
+        background-color: #022350; 
+        border-color: #022350;
+        color: #fff;
+        transition: all 0.3s ease; 
+        font-size: 1.05rem; 
+        font-weight: 600;
+    }
+    
+    .btn-solid-navy:hover {
+        background-color: #033475;
+        border-color: #033475;
+        transform: translateY(-2px); 
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+</style>

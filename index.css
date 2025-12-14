@@ -1,0 +1,556 @@
+        /* 1. Global Setup - Revised Theme with Karuneelak (Navy) and Deep Blue Accents */
+        :root {
+            --karuneelam-navy: #0A1931;        /* Deep Navy Blue for Header/Footer/Primary CTA (UNCHANGED) */
+            --alex-primary: #0077B6;           /* NEW Primary Accent: Deep Blue */
+            --alex-secondary: #00B4D8;         /* NEW Secondary Accent: Slightly lighter Blue */
+            --alex-light: #CAF0F8;             /* NEW Light Accent: Very Light Blue */
+            --alex-dark-text: #3A405A;         /* Dark Grey Text */
+            --white-color: #ffffff;
+            --light-bg: #F5F5F5;               /* Off-White Background */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            color: var(--alex-dark-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* A11y Enhancement: Skip to content link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--alex-secondary);
+            color: var(--karuneelam-navy);
+            padding: 8px;
+            z-index: 9999;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 0 0 5px 0;
+            transition: top 0.3s ease-in-out;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+        /* End A11y */
+
+        .container {
+            width: 90%;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 25px 0;
+        }
+
+        /* 2. Header & Navigation - KARUNEELAK (NAVY BLUE) */
+        header {
+            background-color: var(--karuneelam-navy); /* Karuneelak Header */
+            color: var(--white-color);
+            padding: 18px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            color: var(--alex-secondary); /* Blue Accent */
+            font-weight: 900;
+            letter-spacing: 1px;
+            transition: all 0.4s ease-out;
+            cursor: pointer;
+        }
+
+        header h1 span {
+            color: var(--white-color);
+            font-weight: 700;
+        }
+
+        header h1:hover {
+            transform: scale(1.1) rotate(0deg);
+            color: var(--alex-light);
+            text-shadow: 0 0 10px rgba(0, 119, 182, 0.7); /* Blue Shadow */
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav ul li a {
+            color: var(--white-color);
+            text-decoration: none;
+            padding: 12px 18px; 
+            display: block;
+            border-radius: 30px;
+            transition: all 0.4s ease-in-out;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            white-space: nowrap; 
+        }
+
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: -1;
+        }
+
+        nav ul li a:hover::before {
+            left: 100%;
+        }
+
+        nav ul li a:hover {
+            background-color: var(--alex-primary); /* Deep Blue */
+            color: var(--alex-dark-text); 
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 3. Hero Section (No picture color change) */
+        .hero {
+            /* NOTE: For image to show, replace 'i.jpg' with an actual path/URL */
+            background: url('i.jpg') no-repeat center center/cover;
+            color: var(--white-color); 
+            text-align: center;
+            padding: 180px 20px;
+            height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInScale 2s ease-out;
+            position: relative;
+            overflow: hidden;
+            filter: none; /* IMPORTANT: Removed all filters to preserve image color */
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3); /* Slightly darker overlay for better text readability */
+            box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            position: relative;
+            z-index: 2; 
+        }
+
+        .hero h2 {
+            font-size: 5.2em;
+            margin-bottom: 25px;
+            font-weight: 900; 
+            line-height: 1.1;
+            text-shadow: 4px 4px 10px rgba(0,0,0,0.9), 0 0 20px var(--alex-primary); /* Blue Shadow */
+            animation: slideDownFade 1.5s ease-out forwards;
+            color: var(--white-color); 
+        }
+
+        .hero p {
+            font-size: 2em;
+            margin-bottom: 60px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 2px 2px 5px rgba(0,0,0,1);
+            animation: slideUpFade 1.5s ease-out forwards;
+            color: var(--white-color); 
+            font-weight: 600;
+        }
+        
+        .cta-group {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        /* CTA Buttons */
+        .cta-button-gold {
+            display: inline-block;
+            background: var(--karuneelam-navy); /* Karuneelak for Apply Now (UNCHANGED) */
+            color: var(--white-color); 
+            padding: 20px 50px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.4em; 
+            font-weight: 800;
+            border: 3px solid var(--alex-secondary); /* Secondary Blue */
+            cursor: pointer;
+            transition: all 0.4s ease-in-out;
+            animation: pulseLight 2.5s infinite; 
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .cta-button-gold:hover {
+            background: var(--alex-primary); /* Deep Blue Hover */
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 119, 182, 0.5); /* Blue Shadow */
+            color: var(--white-color); 
+            animation: none;
+        }
+        
+        .cta-button-blue {
+            display: inline-block;
+            background: var(--white-color); 
+            color: var(--alex-dark-text);
+            padding: 20px 50px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.4em; 
+            font-weight: 800;
+            border: 3px solid var(--alex-primary); /* Deep Blue Border */
+            cursor: pointer;
+            transition: all 0.4s ease-in-out;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button-blue:hover {
+            background: var(--alex-light);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 0 15px var(--alex-primary); /* Blue Shadow */
+            color: var(--alex-dark-text);
+        }
+
+
+        /* 4. Features Section - CARD COLORS (NEW BLUE ACCENT) */
+        .features {
+            padding: 120px 0;
+            text-align: center;
+            background-color: var(--white-color); 
+        }
+
+        .features h3 {
+            font-size: 4em;
+            margin-bottom: 70px;
+            color: var(--alex-dark-text); 
+            font-weight: 900;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .features h3::after {
+            content: '';
+            display: block;
+            width: 150px;
+            height: 7px;
+            background: linear-gradient(90deg, var(--alex-primary), var(--alex-secondary)); /* Blue Gradient */
+            margin: 25px auto 0;
+            border-radius: 4px;
+        }
+
+        .feature-grid {
+            /* Adjusted grid layout to prefer 4 columns but allow flexibility */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 30px; 
+            margin-top: 50px;
+        }
+
+        .feature-item {
+            background-color: var(--light-bg); 
+            padding: 25px; 
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+            text-align: left;
+            border: 2px solid transparent;
+            transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            opacity: 0;
+            transform: translateY(50px) perspective(1200px);
+            cursor: pointer;
+            position: relative; 
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .feature-item::after { 
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--alex-primary); /* Deep Blue */
+            transition: width 0.4s ease-out;
+        }
+        
+        .feature-item:hover {
+            box-shadow: 0 15px 40px rgba(0, 119, 182, 0.25), 0 0 10px var(--alex-primary); /* Blue Shadow */
+            transform: translateY(-10px) rotateX(3deg) scale(1.02) perspective(1200px); 
+            background-color: var(--white-color);
+            border: 2px solid var(--alex-primary); /* Deep Blue Border */
+        }
+
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            transform: skewX(-25deg);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 1;
+        }
+
+        .feature-item:hover::before {
+            left: 120%;
+        }
+
+        .feature-item-image {
+            width: 100%; 
+            height: 150px; 
+            object-fit: cover; 
+            border-radius: 12px;
+            margin-bottom: 20px; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            transition: transform 0.5s ease-out, box-shadow 0.5s ease-out;
+            border: 2px solid var(--alex-light); /* Light Blue Border */
+                 
+        }
+
+        .feature-item:hover .feature-item-image {
+            transform: scale(1.05); 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 0 10px var(--alex-primary); 
+        }
+
+        .feature-item h4 {
+            color: var(--alex-primary); /* Deep Blue */
+            margin-top: 0;
+            font-size: 1.5em; 
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+            margin-bottom: 15px; 
+            letter-spacing: 0.8px;
+        }
+
+        .feature-item h4 span {
+            font-size: 1.2em; 
+            color: var(--alex-secondary); /* Secondary Blue */
+            text-shadow: 1px 1px 5px rgba(0, 119, 182, 0.5); /* Blue Shadow */
+        }
+
+        .feature-item p {
+            font-size: 1em; 
+            color: var(--alex-dark-text); 
+            flex-grow: 1; 
+            line-height: 1.6; 
+        }
+        
+        /* 5. Map & Animation Section Styling */
+        .location-map {
+            padding: 100px 0;
+            background-color: var(--light-bg);
+            text-align: center;
+        }
+        
+        .location-map h3 {
+            font-size: 3.5em;
+            margin-bottom: 50px;
+            color: var(--alex-dark-text);
+            font-weight: 900;
+            position: relative;
+            text-transform: uppercase;
+        }
+
+        .location-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px; 
+            padding: 20px;
+        }
+
+        .car-animation-container {
+            width: 500px;
+            height: 500px;
+            background: var(--light-bg); 
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            /* border: 5px solid var(--alex-primary);/* /* Deep Blue Border */
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; 
+            perspective: 1000px; 
+        }
+
+        .animated-car-image {
+            /* NOTE: For image to show, replace 'car2.jpg' with an actual path/URL */
+            position: absolute;
+            bottom: 5%; 
+            left: 50%;
+            transform: translateX(-50%) rotateZ(0deg) scale(1.0); 
+            width: 500px; 
+            height: auto;
+            object-fit: contain;
+            animation: floatSimple 4s ease-in-out infinite alternate; 
+            transform-origin: bottom center; 
+            z-index: 2;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.4));
+        }
+        
+        /* Map box styles */
+        .map-box {
+            width: 500px;
+            height: 500px;
+            overflow: hidden;
+            /*border: 5px solid var(--alex-primary); /* Deep Blue Border */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-box iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* 6. Footer - KARUNEELAK (NAVY BLUE) */
+        footer {
+            background-color: var(--karuneelam-navy); /* Karuneelak Footer */
+            color: var(--white-color);
+            text-align: center;
+            padding: 35px 0;
+            margin-top: 0; 
+            font-size: 1.05em;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        footer p {
+            margin: 0;
+            letter-spacing: 0.8px;
+            color: var(--white-color);
+        }
+
+        /* 7. Animations (keyframes) */
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideDownFade {
+            from { opacity: 0; transform: translateY(-100px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(100px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Light Pulse Animation (Updated to use Blue) */
+        @keyframes pulseLight { 
+            0% { transform: scale(1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); }
+            50% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(0, 119, 182, 0.3); }
+            100% { transform: scale(1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); }
+        }
+        
+        @keyframes floatSimple {
+            0% {
+                transform: translate(-50%, 0px) scale(1.0);
+            }
+            50% { 
+                transform: translate(-50%, -15px) scale(1.02);
+            }
+            100% {
+                transform: translate(-50%, 0px) scale(1.0);
+            }
+        }
+        
+        .animate-in {
+            animation: slideUpFade 1.2s ease-out forwards;
+        }
+        
+        /* 8. Responsiveness (Media Queries) - Unchanged as they were well-implemented */
+        @media (max-width: 1200px) {
+            nav ul li a { padding: 12px 15px; font-size: 0.9em; } 
+        }
+        
+        @media (max-width: 1024px) {
+            .hero h2 { font-size: 4em; }
+            .hero p { font-size: 1.8em; }
+            .features h3 { font-size: 3.5em; }
+            .cta-group { flex-direction: column; gap: 15px; }
+            .cta-button-gold, .cta-button-blue { padding: 15px 30px; font-size: 1.2em; width: 80%; max-width: 400px; margin: 0 auto; }
+            nav ul li a { padding: 10px 12px; }
+            
+            .location-section {
+                flex-direction: column; 
+                align-items: center; 
+            }
+            .map-box, .car-animation-container {
+                width: 90%; 
+                height: 300px; 
+            }
+            .animated-car-image { 
+                width: 180px; 
+            }
+        }
+
+        @media (max-width: 768px) {
+            header .container { flex-direction: column; text-align: center; }
+            nav ul { margin-top: 25px; justify-content: center; flex-wrap: wrap; }
+            nav ul li a { padding: 8px 10px; font-size: 0.8em; }
+            .hero { padding: 120px 15px; height: 600px; }
+            .hero h2 { font-size: 3.2em; }
+            .hero p { font-size: 1.5em; margin-bottom: 30px; }
+            .cta-button-gold, .cta-button-blue { font-size: 1.1em; width: 90%; max-width: none; }
+            .features h3 { font-size: 2.8em; margin-bottom: 50px; }
+            .feature-grid { grid-template-columns: 1fr; gap: 35px; }
+            .map-box { height: 400px; }
+            .animated-car-image { 
+                width: 150px; 
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 { font-size: 1.8em; }
+            .hero { padding: 80px 10px; height: 500px; }
+            .hero h2 { font-size: 2.5em; }
+            .hero p { font-size: 1.2em; margin-bottom: 20px; }
+            .cta-button-gold, .cta-button-blue { font-size: 1em; padding: 10px 20px; }
+            .location-map h3 { font-size: 2.2em; }
+            .map-box, .car-animation-container { height: 300px; }
+        }

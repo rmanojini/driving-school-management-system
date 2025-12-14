@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Driving School - The Light Standard in Driving Education</title>
+    <meta name="description" content="Alex Driving School offers a modern, simplified system for license applications, instructor management, and real-time progress tracking in a standard deep blue theme.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> 
+
+    <link rel="stylesheet" type="text/css" href="index.css">
+
+</head>
+<body>
+
+    <header role="banner">
+        <div class="container">
+            <h1>Alex <span>Driving School</span></h1> 
+            <nav role="navigation" aria-label="Main Navigation">
+                <ul>
+                    <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#features"><i class="fas fa-check-circle"></i> Features</a></li>
+                    <li><a href="registration.php"><i class="fas fa-file-alt"></i> Apply Now</a></li> 
+                    <li><a href="#contact"><i class="fas fa-phone-alt"></i> Contact</a></li>
+                    <li><a href="login.php"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1>Your Path to a Driving License, Simplified!</h1>
+                <p><font size="5">Our **Driving School Management System** streamlines the process of obtaining your license, offering online applications, instructor management, and real-time updates.</font></p>
+                
+                <div class="cta-group">
+                    <a href="#apply" class="cta-button-gold">Apply Now! <i class="fas fa-arrow-right"></i></a>
+                    <a href="#apply" class="cta-button-blue">Check Application <i class="fas fa-search"></i></a> 
+                </div>
+                
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <h1>Why Choose Alex Driving School?</h1>
+                <div class="feature-grid">
+                    <div class="feature-item" style="animation-delay: 0.1s;">
+                        <img src="1.png" alt="Online Application Form" class="feature-item-image"> 
+                        <h4><span><i class="fas fa-laptop-code"></i></span> Online Application</h4>
+                        <p>Students can conveniently **apply for driving courses** and manage their profiles through our intuitive online portal.</p>
+                    </div>
+                    <div class="feature-item" style="animation-delay: 0.3s;">
+                        <img src="2.png" alt="Driving Courses Offered" class="feature-item-image"> 
+                        <h4><span><i class="fas fa-road"></i></span> Driving Courses Offered</h4>
+                        <p>Explore a variety of **driving courses tailored to your needs**, from beginner lessons to advanced defensive driving techniques.</p>
+                    </div>
+                    <div class="feature-item" style="animation-delay: 0.5s;">
+                        <img src="3.png" alt="Test Preparation Resources" class="feature-item-image"> 
+                        <h4><span><i class="fas fa-book-reader"></i></span> Test Preparation</h4>
+                        <p>Access **comprehensive study materials**, practice tests, and expert tips to ace your driving license exams with confidence.</p>
+                    </div>
+                    <div class="feature-item" style="animation-delay: 0.7s;">
+                        <img src="4.png" alt="Progress Tracking" class="feature-item-image"> 
+                        <h4><span><i class="fas fa-chart-line"></i></span> Progress Tracking</h4>
+                        <p>Monitor your **learning journey with detailed progress reports**, lesson summaries, and performance insights to stay on track.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section class="location-map" id="contact">
+            <div class="container">
+                <h1>Find Our Clean Location & Watch Our Progress</h1>
+                
+                <div class="location-section">
+
+                    <div class="car-animation-container" id="car-box">
+                         <img src="car2.jpg" class="animated-car-image" alt="Animated Car on Road" id="car-photo">
+                    </div>
+
+                    <div class="map-box">
+                        <iframe
+                            src="https://www.google.com/maps?q=batticaloa&z=13&output=embed"
+                            allowfullscreen=""
+                            loading="lazy"
+                            title="Alex Driving School Location Map"
+                            sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                            >
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="apply" class="features" style="background-color: var(--alex-light); padding: 50px 0; border-top: 5px solid var(--alex-primary);">
+            <div class="container">
+                <h1 style="color: var(--karuneelam-navy); margin-bottom: 30px;">Start Your Journey: Online Application Form</h1>
+                <p style="font-size: 1.2em; color: var(--alex-dark-text);">*The application form content would go here, which can be linked from the 'Apply Now!' button.*</p>
+            </div>
+        </section>
+
+        <hr>
+    </main>
+
+    <footer role="contentinfo">
+        <div class="container">
+            <p>© 2025 Alex Driving School - The Light Standard in Driving Education. All rights reserved.</p>
+            <p>Contact Us: +123 456 7890 | Email: info@alexdrivingschool.com</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for scroll-triggered animations on feature items
+        const featureItems = document.querySelectorAll('.feature-item');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, { threshold: 0.2, rootMargin: "0px 0px -50px 0px" }); 
+
+        featureItems.forEach(item => {
+            observer.observe(item);
+        });
+    </script>
+</body>
+</html> 
