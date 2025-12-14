@@ -16,7 +16,26 @@ include '../includes/connection.php';
         mysqli_stmt_bind_param($stmt, "sssis", $student_id, $exam_type, $exam_date, $marks, $result_status);
     
         if(mysqli_stmt_execute($stmt)){
-            echo "<script>alert('Result Added Successfully!'); window.location.href='results.php';</script>";
+            // Fetch Student Email & Name for Notification
+            $stmt_student = mysqli_prepare($con, "SELECT name, email FROM registration WHERE `index` = ?");
+            mysqli_stmt_bind_param($stmt_student, "s", $student_id);
+            mysqli_stmt_execute($stmt_student);
+            $res_student = mysqli_stmt_get_result($stmt_student);
+            
+            if($row_student = mysqli_fetch_assoc($res_student)){
+                $student_email = $row_student['email'];
+                $student_name = $row_student['name'];
+                
+                // Send Email
+                include '../includes/email_helper.php';
+                send_result_notification($student_email, $student_name, $exam_type, $marks, $result_status);
+                
+                echo "<script>alert('Result Added Successfully! Email notification sent to $student_name.'); window.location.href='results.php';</script>";
+            } else {
+                echo "<script>alert('Result Added, but could not fetch student email.'); window.location.href='results.php';</script>";
+            }
+            mysqli_stmt_close($stmt_student);
+
         } else {
             echo "<script>alert('Error: " . mysqli_error($con) . "');</script>";
         }

@@ -59,9 +59,24 @@ if(isset($_POST['register_btn'])){
             echo "<script>alert('Error Updating: " . mysqli_error($con) . "');</script>";
         }
     } else {
-        // Fallback: Create NEW student (if admin types everything manually)
-        // ... (Optional, but let's stick to the update flow for now)
-        echo "<script>alert('Please search for a student NIC first to approve.');</script>";
+    } else {
+        // Fallback: Create NEW student (Walk-in Registration by Admin)
+        $password = password_hash('1234', PASSWORD_DEFAULT); // Default password for offline users
+        $status = 'approved';
+        
+        // Admin creates new student -> Status Approved immediately
+        $sql = "INSERT INTO registration (name, dob, age, nic, gender, address, phone_number, email, password, status, reg_date, classofvehicle, medical_number, medical_date)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                
+        $stmt = mysqli_prepare($con, $sql);
+        mysqli_stmt_bind_param($stmt, "ssssssssssssss", $name, $dob, $age, $nic, $gender, $address, $phone_number, $email, $password, $status, $reg_date, $classofvehicle, $medical_number, $medical_date);
+        
+        if(mysqli_stmt_execute($stmt)){
+            echo "<script>alert('New Walk-in Student Registered & Approved Successfully!'); window.location.href='admin/student_details.php';</script>";
+        } else {
+            echo "<script>alert('Error Registering: " . mysqli_error($con) . "');</script>";
+        }
+    }
     }
 }
 ?>

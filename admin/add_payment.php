@@ -3,16 +3,55 @@ include '../includes/connection.php';
 
 if(isset($_POST['add_payment'])){
     $student_id = $_POST['student_id'];
-    $amount = $_POST['amount'];
     $payment_type = $_POST['payment_type'];
     $remarks = $_POST['remarks'];
 
+    // 1. Fetch Student's Vehicle Class from DB (Secure)
+    $stmt_class = mysqli_prepare($con, "SELECT classofvehicle FROM registration WHERE `index` = ?");
+    mysqli_stmt_bind_param($stmt_class, "s", $student_id);
+    mysqli_stmt_execute($stmt_class);
+    $res_class = mysqli_stmt_get_result($stmt_class);
+    $row_class = mysqli_fetch_assoc($res_class);
+    $db_class = $row_class['classofvehicle'] ?? '';
+    mysqli_stmt_close($stmt_class);
+
+    // 2. Define Pricing Rules (Server-side Source of Truth)
+    $prices = [
+        'A' => ['1st_installment' => 5000, 'full_payment' => 9000, '2nd_installment' => 4000],
+        'B' => ['1st_installment' => 9000, 'full_payment' => 18000, '2nd_installment' => 9000],
+        'B1' => ['1st_installment' => 5000, 'full_payment' => 10000, '2nd_installment' => 5000],
+        'G' => ['1st_installment' => 5000, 'full_payment' => 10000, '2nd_installment' => 5000],
+        'D' => ['1st_installment' => 10000, 'full_payment' => 19000, '2nd_installment' => 9000],
+        'AB' => ['1st_installment' => 10000, 'full_payment' => 20000, '2nd_installment' => 10000],
+        'AB1' => ['1st_installment' => 7500, 'full_payment' => 15000, '2nd_installment' => 7500],
+        'AB1B' => ['1st_installment' => 11000, 'full_payment' => 22500, '2nd_installment' => 11500],
+        'AB1BG' => ['1st_installment' => 12000, 'full_payment' => 25000, '2nd_installment' => 13000]
+    ];
+
+    // 3. Determine/Validate Amount
+    $amount = 0;
+    if ($payment_type == 'exam_fee') {
+        // Exam fee is manually entered for now? Or strict? User didn't specify. 
+        // Let's allow manual input for exam_fee ONLY, but user asked to block manual.
+        // Assuming strict adherence to price list for the Installments.
+        // If $_POST['amount'] differs from Price List, OVERWRITE IT or REJECT IT?
+        // Safest is to OVERWRITE it with the correct price.
+        $amount = $_POST['amount']; // Allow manual for non-listed types?
+    } elseif (isset($prices[$db_class][$payment_type])) {
+        $amount = $prices[$db_class][$payment_type];
+    } else {
+        // Fallback or Error
+         echo "<script>alert('Error: Invalid Payment Type or Class configuration.');</script>";
+         exit; // Or handle gracefully
+    }
+
+    // Insert
     $sql = "INSERT INTO payments (student_id, amount, payment_type, remarks) VALUES (?, ?, ?, ?)";
     $stmt = mysqli_prepare($con, $sql);
     mysqli_stmt_bind_param($stmt, "sdss", $student_id, $amount, $payment_type, $remarks);
 
     if(mysqli_stmt_execute($stmt)){
-        echo "<script>alert('Payment Added Successfully!'); window.location.href='payments.php';</script>";
+        echo "<script>alert('Payment Added Successfully! Amount: Rs " . $amount . "'); window.location.href='payments.php';</script>";
     } else {
         echo "<script>alert('Error: " . mysqli_error($con) . "');</script>";
     }
@@ -35,7 +74,6 @@ if(isset($_POST['add_payment'])){
         <div class="card-body">
             <form method="POST">
                 <div class="mb-3">
-                <div class="mb-3">
                     <label>Select Student</label>
                     <select name="student_id" id="student_id" class="form-select" required>
                         <option value="" data-class="">-- Select Student --</option>
@@ -48,20 +86,11 @@ if(isset($_POST['add_payment'])){
                     </select>
                 </div>
                 
+                <!-- Vehicle Class - DISABLED (Visual Only) -->
                 <div class="mb-3">
-                    <label>Vehicle Class</label>
-                    <select class="form-select" id="vehicle_class" name="classofvehicle" required>
-                        <option value="" disabled selected>Select a vehicle class</option>
-                        <option value="A">A - Motor Cycles (Motorbikes)</option>
-                        <option value="B">B - Motor Cars / Van</option>
-                        <option value="B1">B1 - Motor Tricycles (Three Wheelers)</option>
-                        <option value="G">G - Land Vehicles (Tractors / Agricultural)</option>
-                        <option value="D">D - Heavy Motor Vehicles (Lorry / Bus)</option>
-                        <option value="AB1">AB1 - Combo: A (Motor Cycles) & B1 (Tricycles)</option>
-                        <option value="AB1B">AB1B - Combo: A, B1, and B (Motor Cars)</option>
-                        <option value="AB1BG">AB1BG - Combo: A, B1, B, and G</option>
-                        <option value="AB">AB - Combo: A (Motor Cycles) & B (Motor Cars)</option>
-                    </select>
+                    <label>Vehicle Class (Auto-Detected)</label>
+                    <input type="text" id="vehicle_class_display" class="form-control" readonly style="background-color: #e9ecef;">
+                    <!-- Hidden input to keep logic simple if needed, but we rely on DB lookup backend -->
                 </div>
 
                 <div class="mb-3">
@@ -70,13 +99,14 @@ if(isset($_POST['add_payment'])){
                         <option value="" disabled selected>Select Type</option>
                         <option value="1st_installment">1st Installment</option>
                         <option value="full_payment">Full Payment</option>
-                        <option value="2nd_installment">2nd Installment / Other</option>
+                        <option value="2nd_installment">2nd Installment (Balance)</option>
+                         <option value="exam_fee">Exam Fee (Manual)</option>
                     </select>
                 </div>
 
                 <div class="mb-3">
-                    <label>Amount (Rs)</label>
-                    <input type="number" name="amount" id="amount" class="form-control" step="0.01" required>
+                    <label>Amount (Rs) - <small class="text-muted">Auto-Calculated</small></label>
+                    <input type="number" name="amount" id="amount" class="form-control" step="0.01" readonly style="background-color: #e9ecef;" required>
                 </div>
 
                 <div class="mb-3">
@@ -92,50 +122,62 @@ if(isset($_POST['add_payment'])){
 
 <script>
     const studentSelect = document.getElementById('student_id');
-    const vehicleSelect = document.getElementById('vehicle_class');
+    const vehicleDisplay = document.getElementById('vehicle_class_display');
     const typeSelect = document.getElementById('payment_type');
     const amountInput = document.getElementById('amount');
 
-    // Pricing Structure
+    // Pricing Structure (Matches Server-Side)
     const prices = {
-        'A': { '1st_installment': 5000, 'full_payment': 9000 },
-        'B': { '1st_installment': 9000, 'full_payment': 18000 },
-        'B1': { '1st_installment': 5000, 'full_payment': 10000 },
-        'G': { '1st_installment': 5000, 'full_payment': 10000 },
-        'D': { '1st_installment': 10000, 'full_payment': 19000 },
-        'AB': { '1st_installment': 10000, 'full_payment': 20000 },
-        'AB1': { '1st_installment': 7500, 'full_payment': 15000 },
-        'AB1B': { '1st_installment': 11000, 'full_payment': 22500 },
-        'AB1BG': { '1st_installment': 12000, 'full_payment': 25000 }
+        'A': { '1st_installment': 5000, 'full_payment': 9000, '2nd_installment': 4000 },
+        'B': { '1st_installment': 9000, 'full_payment': 18000, '2nd_installment': 9000 },
+        'B1': { '1st_installment': 5000, 'full_payment': 10000, '2nd_installment': 5000 },
+        'G': { '1st_installment': 5000, 'full_payment': 10000, '2nd_installment': 5000 },
+        'D': { '1st_installment': 10000, 'full_payment': 19000, '2nd_installment': 9000 },
+        'AB': { '1st_installment': 10000, 'full_payment': 20000, '2nd_installment': 10000 },
+        'AB1': { '1st_installment': 7500, 'full_payment': 15000, '2nd_installment': 7500 },
+        'AB1B': { '1st_installment': 11000, 'full_payment': 22500, '2nd_installment': 11500 },
+        'AB1BG': { '1st_installment': 12000, 'full_payment': 25000, '2nd_installment': 13000 }
     };
+
+    let currentClass = '';
 
     // Auto-select Class when Student updates
     studentSelect.addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
-        const studentClass = selectedOption.getAttribute('data-class');
+        currentClass = selectedOption.getAttribute('data-class');
         
-        if(studentClass) {
-            vehicleSelect.value = studentClass;
-            updateAmount(); // Trigger amount update if Type is already selected
+        if(currentClass) {
+            vehicleDisplay.value = currentClass; // Show Class Code
+            updateAmount();
+        } else {
+            vehicleDisplay.value = '';
         }
     });
 
-    // Update Amount when Class or Type changes
+    // Update Amount
     function updateAmount() {
-        const vClass = vehicleSelect.value;
         const pType = typeSelect.value;
+        
+        if(pType === 'exam_fee') {
+             amountInput.readOnly = false;
+             amountInput.style.backgroundColor = '#ffffff';
+             amountInput.placeholder = 'Enter Exam Fee';
+             amountInput.value = '';
+             return;
+        }
 
-        if (vClass && pType && prices[vClass] && prices[vClass][pType]) {
-            amountInput.value = prices[vClass][pType];
-        } else {
-            // Don't clear if it's '2nd_installment' or manual entry, just leave as is or clear if new selection is invalid
-            if (pType !== '2nd_installment') {
-                 // optionally clear or leave blank
-            }
+        // Lock for standard payments
+        amountInput.readOnly = true;
+        amountInput.style.backgroundColor = '#e9ecef';
+
+        if (currentClass && pType && prices[currentClass] && prices[currentClass][pType]) {
+            amountInput.value = prices[currentClass][pType];
+        } else if (currentClass && pType) {
+             // If combo not found (rare), maybe allow manual? Or show 0
+             amountInput.value = 0;
         }
     }
 
-    vehicleSelect.addEventListener('change', updateAmount);
     typeSelect.addEventListener('change', updateAmount);
 
 </script>

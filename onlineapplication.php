@@ -99,16 +99,7 @@
                     
                     <!-- Added Password Field for Login -->
                     <!-- Added Password Field for Login with Toggle -->
-                    <div class="col-12">
-                         <label for="password" class="form-label">Password</label>
-                         <div class="input-group">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Create a password" required>
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                         </div>
-                    </div>
-
+                   
                     <div class="col-12">
                         <label class="form-label d-block">Gender</label>
                         <div class="form-check form-check-inline">
@@ -134,6 +125,16 @@
                     <div class="col-md-6">
                          <label for="email" class="form-label">Email Address</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="password" class="form-label">Create Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password" name="password" minlength="4" required>
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Registered Date removed (handled by backend) -->
@@ -171,6 +172,22 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById('togglePassword').addEventListener('click', function (e) {
+        const passwordInput = document.getElementById('password');
+        const icon = this.querySelector('i');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+</script>
 </body>
 </html>
 
@@ -198,10 +215,23 @@
     $doc_nic = NULL;
     $doc_address = NULL;
 
-    // SQL INSERT
-    // Explicitly inserting NULL for medical columns and doc columns
-    $sql="INSERT INTO registration (name, dob, age, nic, gender, address, phone_number, email, password, status, reg_date, classofvehicle, doc_nic, doc_address, medical_number, medical_date)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL)";
+    // Check for Duplicates (NIC or Email)
+    $check_sql = "SELECT nic, email FROM registration WHERE nic = ? OR email = ?";
+    $check_stmt = mysqli_prepare($con, $check_sql);
+    mysqli_stmt_bind_param($check_stmt, "ss", $nic, $email);
+    mysqli_stmt_execute($check_stmt);
+    mysqli_stmt_store_result($check_stmt);
+    
+    if(mysqli_stmt_num_rows($check_stmt) > 0){
+        echo "<script>alert('Error: A student with this NIC or Email already exists!');</script>";
+        mysqli_stmt_close($check_stmt);
+    } else {
+        mysqli_stmt_close($check_stmt);
+
+        // SQL INSERT
+        // Explicitly inserting NULL for medical columns and doc columns
+        $sql="INSERT INTO registration (name, dob, age, nic, gender, address, phone_number, email, password, status, reg_date, classofvehicle, doc_nic, doc_address, medical_number, medical_date)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL)";
 
     $stmt = mysqli_prepare($con, $sql);
     if($stmt) {
@@ -218,5 +248,7 @@
     } else {
         echo "<script>alert('Database Error');</script>";
     }
-}
+    }
+    } // End Duplicate Check Else
+ // End Isset
 ?>
