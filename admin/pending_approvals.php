@@ -37,21 +37,24 @@ include '../includes/connection.php';
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "SELECT * FROM registration WHERE status = 'pending'";
+                    $sql = "SELECT * FROM onlineapplication"; 
                     $result = mysqli_query($con, $sql);
 
                     if(mysqli_num_rows($result) > 0){
                         while($row = mysqli_fetch_assoc($result)){
+                            // Determine Primary Key (app_id or id or index)
+                            $id = $row['app_id'] ?? $row['id'] ?? $row['index']; 
+                            
                             echo "<tr>";
-                            echo "<td>" . $row['index'] . "</td>";
+                            echo "<td>" . $id . "</td>";
                             echo "<td>" . $row['name'] . "</td>";
                             echo "<td>" . $row['email'] . "</td>";
                             echo "<td>" . $row['nic'] . "</td>";
                             echo "<td>" . $row['classofvehicle'] . "</td>";
                             echo "<td>" . $row['reg_date'] . "</td>";
                             echo "<td>
-                                    <a href='approve_user.php?id=" . $row['index'] . "' class='btn btn-success btn-sm'>Approve</a>
-                                    <a href='reject_user.php?id=" . $row['index'] . "' class='btn btn-danger btn-sm'>Reject</a>
+                                    <a href='approve_user.php?id=" . $id . "' class='btn btn-success btn-sm'>Approve</a>
+                                    <a href='reject_user.php?id=" . $id . "' class='btn btn-danger btn-sm'>Reject</a>
                                   </td>";
                             echo "</tr>";
                         }

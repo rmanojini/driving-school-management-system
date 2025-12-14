@@ -25,6 +25,22 @@ $payments = mysqli_query($con, $payment_query);
 // Fetch Results
 $result_query = "SELECT * FROM results WHERE student_id = '$student_id' ORDER BY exam_date DESC";
 $results = mysqli_query($con, $result_query);
+// Handle Password Reset
+if(isset($_POST['reset_password'])){
+    $new_password = $_POST['new_password'];
+    $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+    
+    $update_pass_sql = "UPDATE registration SET password = ? WHERE `index` = ?";
+    $stmt_pass = mysqli_prepare($con, $update_pass_sql);
+    mysqli_stmt_bind_param($stmt_pass, "ss", $hashed_password, $student_id);
+    
+    if(mysqli_stmt_execute($stmt_pass)){
+        echo "<script>alert('Password Reset Successfully!'); window.location.href='view_student.php?id=$student_id';</script>";
+    } else {
+        echo "<script>alert('Error Updating Password: " . mysqli_error($con) . "');</script>";
+    }
+    mysqli_stmt_close($stmt_pass);
+}
 ?>
 
 <!DOCTYPE html>
@@ -58,8 +74,51 @@ $results = mysqli_query($con, $result_query);
             <img src="<?php echo $photoPath; ?>" alt="Student Photo" class="profile-img shadow">
             <h2 class="mt-3 fw-bold"><?php echo $student['name']; ?></h2>
             <p class="mb-0"><i class="fas fa-id-card"></i> <?php echo $student['nic']; ?> | <i class="fas fa-phone"></i> <?php echo $student['phone_number']; ?></p>
-            <span class="badge bg-light text-primary mt-2 fs-6"><?php echo strtoupper($student['status']); ?></span>
+            <p class="mb-0"><i class="fas fa-id-card"></i> <?php echo $student['nic']; ?> | <i class="fas fa-phone"></i> <?php echo $student['phone_number']; ?></p>
+            <span class="badge bg-light text-primary mt-2 fs-6 mb-2"><?php echo strtoupper($student['status']); ?></span>
+            <br>
+            <button type="button" class="btn btn-warning btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#resetPasswordModal">
+                <i class="fas fa-key"></i> Reset Password
+            </button>
         </div>
+
+        <!-- Password Reset Modal -->
+        <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Reset Password for <?php echo $student['name']; ?></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST">
+                        <div class="modal-body">
+                            <p class="text-danger small">Warning: This will overwrite the student's current password immediately.</p>
+                            <label class="form-label">New Password</label>
+                            <div class="input-group">
+                                <input type="text" name="new_password" class="form-control" placeholder="Enter new password" required minlength="4">
+                                <button class="btn btn-outline-secondary" type="button" onclick="generatePassword()">Generate</button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" name="reset_password" class="btn btn-warning">Update Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function generatePassword() {
+                const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+                const length = 8;
+                let password = "";
+                for (let i = 0; i < length; i++) {
+                    password += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                document.querySelector('input[name="new_password"]').value = password;
+            }
+        </script>
 
         <div class="card-body p-4">
             
@@ -146,5 +205,9 @@ $results = mysqli_query($con, $result_query);
     </div>
 </div>
 
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

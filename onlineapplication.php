@@ -205,7 +205,7 @@
     $address = $_POST['address'];
     $phone_number = $_POST['phone_number'];
     $email = $_POST['email'];
-    $raw_password = $_POST['password']; 
+    $raw_password = $_POST['password'] ?? $nic; // Default to NIC if password missing 
     $password = password_hash($raw_password, PASSWORD_DEFAULT);
     $reg_date = date('Y-m-d'); // Auto-set date
     $classofvehicle = $_POST['classofvehicle'];
@@ -228,10 +228,10 @@
     } else {
         mysqli_stmt_close($check_stmt);
 
-        // SQL INSERT
-        // Explicitly inserting NULL for medical columns and doc columns
-        $sql="INSERT INTO registration (name, dob, age, nic, gender, address, phone_number, email, password, status, reg_date, classofvehicle, doc_nic, doc_address, medical_number, medical_date)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL)";
+        // SQL INSERT INTO onlineapplication (Temporary Table)
+        // Explicitly inserting NULL for doc columns
+        $sql="INSERT INTO onlineapplication (name, dob, age, nic, gender, address, phone_number, email, password, status, reg_date, classofvehicle, doc_nic, doc_address)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = mysqli_prepare($con, $sql);
     if($stmt) {
