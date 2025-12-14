@@ -405,9 +405,11 @@
                     <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i>Dashboard Home</a></li>
                     <li><a href="registration.php"><i class="fas fa-user-plus"></i>Registration</a></li>
                     <li><a href="#"><i class="fas fa-users"></i>Student Details</a></li>
-                    <li><a href="#"><i class="fas fa-receipt"></i>Payment Details</a></li>
-                    <li><a href="#"><i class="fas fa-chart-bar"></i>Results & Grades</a></li>
-                    <li><a href="#"><i class="fas fa-user-cog"></i>User Control</a></li>
+                    <li><a href="admin/pending_approvals.php"><i class="fas fa-check-circle"></i>Approvals</a></li>
+                    <li><a href="admin/payments.php"><i class="fas fa-receipt"></i>Payment Details</a></li>
+                    <li><a href="admin/schedule.php"><i class="fas fa-calendar-alt"></i>Scheduling</a></li>
+                    <li><a href="admin/results.php"><i class="fas fa-chart-bar"></i>Results & Grades</a></li>
+                    <li><a href="admin/reports.php"><i class="fas fa-file-invoice"></i>Reports</a></li>
                     <li><a href="index.html"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
                 </ul>
             </nav>
@@ -431,17 +433,18 @@
                         <h3>New Student Registration</h3>
                         <p>Register new student profiles and course selections.</p>
                     </div>
-                    <div class="card-action" onclick="window.location.href='registration.php'">Go to Registration <i
+                    <div class="card-action" onclick="window.location.href='registration.php'">Go to Admin Form <i
                             class="fas fa-arrow-right"></i></div>
                 </div>
 
                 <div class="feature-card" onclick="handleCardClick(this)">
                     <div class="card-icon cyan"><i class="fas fa-users"></i></div>
                     <div class="card-details">
-                        <h3>Student Details & Search</h3>
-                        <p>View, edit, or search existing student information.</p>
+                        <h3>Pending Approvals</h3>
+                        <p>Approve or Reject new student registrations.</p>
                     </div>
-                    <div class="card-action">View Student List <i class="fas fa-arrow-right"></i></div>
+                    <div class="card-action" onclick="window.location.href='admin/pending_approvals.php'">View Pending
+                        Approvals <i class="fas fa-arrow-right"></i></div>
                 </div>
 
                 <div class="feature-card" onclick="handleCardClick(this)">
@@ -450,7 +453,8 @@
                         <h3>Payment Tracking</h3>
                         <p>Manage fee payments, invoices, and financial records.</p>
                     </div>
-                    <div class="card-action">Manage Payments <i class="fas fa-arrow-right"></i></div>
+                    <div class="card-action" onclick="window.location.href='admin/payments.php'">Manage Payments <i
+                            class="fas fa-arrow-right"></i></div>
                 </div>
 
                 <div class="feature-card" onclick="handleCardClick(this)">
@@ -459,16 +463,18 @@
                         <h3>Exam Results & Grades</h3>
                         <p>Input and view theory and practical exam results.</p>
                     </div>
-                    <div class="card-action">View Analytics <i class="fas fa-arrow-right"></i></div>
+                    <div class="card-action" onclick="window.location.href='admin/results.php'">View Analytics <i
+                            class="fas fa-arrow-right"></i></div>
                 </div>
 
                 <div class="feature-card" onclick="handleCardClick(this)">
                     <div class="card-icon red"><i class="fas fa-user-cog"></i></div>
                     <div class="card-details">
-                        <h3>User Access Control</h3>
-                        <p>Manage admin, instructor, and staff user accounts.</p>
+                        <h3>System Reports</h3>
+                        <p>View income, student stats, and pass rates.</p>
                     </div>
-                    <div class="card-action">Manage Users <i class="fas fa-arrow-right"></i></div>
+                    <div class="card-action" onclick="window.location.href='admin/reports.php'">View Reports <i
+                            class="fas fa-arrow-right"></i></div>
                 </div>
 
             </section>

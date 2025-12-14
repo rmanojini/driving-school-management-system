@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +18,7 @@
         <h2>Login Portal</h2>
         <p class="subtitle"><i class="fas fa-car"></i> Welcome to Alex Driving School</p>
 
-        <form action="/handle-login" method="POST" class="login-form">
+        <form action="" method="POST" class="login-form">
             
             <div class="form-group">
                 <label for="username">Username</label>
@@ -36,8 +39,8 @@
         if(isset($_POST['submit'])){
             include 'includes/connection.php';
 
-            $un=$_POST['un'];
-            $pw=$_POST['pw'];
+            $un=$_POST['username'];
+            $pw=$_POST['password'];
 
             $sql="select * from admin where username='$un' and password='$pw'";
 
