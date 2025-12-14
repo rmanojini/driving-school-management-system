@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Your Journey - Alex Driving School</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/index.css">
+    <style>
+        body {
+            background-color: var(--karuneelam-navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+        }
+
+        .choice-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            max-width: 800px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .choice-container h1 {
+            color: var(--white-color);
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .option-card {
+            background: var(--white-color);
+            padding: 30px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: var(--alex-dark-text);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 119, 182, 0.4);
+        }
+
+        .option-icon {
+            font-size: 4em;
+            color: var(--alex-primary);
+            margin-bottom: 20px;
+        }
+
+        .option-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: var(--karuneelam-navy);
+        }
+
+        .option-card p {
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="choice-container">
+        <h1>Select your path</h1>
+        <div class="options-grid">
+            <a href="registration.php" class="option-card">
+                <div class="option-icon"><i class="fas fa-user-plus"></i></div>
+                <h3>New Student</h3>
+                <p>I want to apply for a driving license.</p>
+            </a>
+
+            <a href="student_login.php" class="option-card">
+                <div class="option-icon"><i class="fas fa-sign-in-alt"></i></div>
+                <h3>Existing Student</h3>
+                <p>I already have an account. Log me in.</p>
+            </a>
+        </div>
+        <div style="margin-top: 30px;">
+            <a href="index.html" style="color: var(--white-color); text-decoration: none; opacity: 0.7;"><i
+                    class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </div>
+
+</body>
+
+</html>

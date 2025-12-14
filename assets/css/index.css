@@ -133,7 +133,7 @@
         /* 3. Hero Section (No picture color change) */
         .hero {
             /* NOTE: For image to show, replace 'i.jpg' with an actual path/URL */
-            background: url('i.jpg') no-repeat center center/cover;
+            background: url('../images/i.jpg') no-repeat center center/cover;
             color: var(--white-color); 
             text-align: center;
             padding: 180px 20px;

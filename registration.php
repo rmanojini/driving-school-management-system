@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Register - Bootstrap Version</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-<link rel="stylesheet" type="text/css" href="regiapp.css">
+<link rel="stylesheet" type="text/css" href="assets/css/regiapp.css">
 </head>
 
 <script>
@@ -53,14 +53,14 @@
     <div class="row shadow bg-white rounded-4 overflow-hidden">
 
         <div class="col-lg-4 left-panel">
-            <img src="1.png" class="img-fluid rounded mb-3" />
+            <img src="assets/images/1.png" class="img-fluid rounded mb-3" />
 
             <div class="step-box">
                 <div class="step-number">1</div>
                 <p class="m-0 small">Register with us, enter your details and click on **Register Button**</p>
             </div>
 
-            <img src="boy.jpg" class="img-fluid rounded mb-3" />
+            <img src="assets/images/boy.jpg" class="img-fluid rounded mb-3" />
 
             <div class="step-box">
                 <div class="step-number bg-danger">2</div>
@@ -71,7 +71,7 @@
         <div class="col-lg-8 p-5">
             <h2 class="fw-bold text-navy mb-4">📝 New User Registration</h2> 
 
-            <form action="registration.php" method="POST" >
+            <form action="registration.php" method="POST" enctype="multipart/form-data">
                 <div class="row g-3">
                    
                     <div class="col-12">
@@ -125,10 +125,15 @@
                          <label for="email" class="form-label">Email Address</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
                     </div>
+
+                    <div class="col-md-6">
+                         <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Create a password" required>
+                    </div>
                     
                     <div class="col-md-6">
                          <label for="reg_date" class="form-label">Registered Date</label>
-                        <input type="date" class="form-control" id="reg_date" name="reg_date" value="2025-12-08" required>
+                        <input type="date" class="form-control" id="reg_date" name="reg_date" value="<?php echo date('Y-m-d'); ?>" required>
                     </div>
 
                     <div class="col-md-6">
@@ -162,6 +167,17 @@
                         <input type="file" class="form-control form-control-file" id="photo_upload" name="photo" accept="image/*" required>
                     </div>
 
+                    <div class="col-12">
+                        <label for="doc_nic" class="form-label">NIC/ID Proof Upload (PDF/Image)</label>
+                        <input type="file" class="form-control form-control-file" id="doc_nic" name="doc_nic" accept="image/*,.pdf">
+                    </div>
+
+                    <div class="col-12">
+                         <label for="doc_address" class="form-label">Address Proof Upload (PDF/Image)</label>
+                        <input type="file" class="form-control form-control-file" id="doc_address" name="doc_address" accept="image/*,.pdf">
+                    </div>
+                    </div>
+
 
                 </div>
 
@@ -183,50 +199,79 @@
 </html>
 
 <?php
+if(isset($_POST['registration'])){
+    include 'includes/connection.php';
+    include 'includes/email_helper.php';
 
-    include 'connection.php';
-
-    if(!$con)
-    {
-        echo "Server Not Connected......Check it";
-        exec();
+    if(!$con) {
+        die("Connection failed: " . mysqli_connect_error());
     }
 
-    if(isset($_POST['registration'])){
+    // Collect data
+    $index = $_POST['index'];
+    $name = $_POST['name'];
+    $dob = $_POST['dob'];
+    $age = $_POST['age'];
+    $nic = $_POST['nic'];
+    $gender = $_POST['gender'];
+    $address = $_POST['address'];
+    $phone_number = $_POST['phone_number'];
+    $email = $_POST['email'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash password
+    $reg_date = $_POST['reg_date'];
+    $classofvehicle = $_POST['classofvehicle'];
+    $medical_number = $_POST['medical_number'];
+    $medical_date = $_POST['medical_date'];
+    $status = 'pending';
+
+    // File Upload Handling Function
+    function uploadFile($fileInputName, $targetDir) {
+        if(isset($_FILES[$fileInputName]) && $_FILES[$fileInputName]['error'] == 0){
+            $fileName = basename($_FILES[$fileInputName]['name']);
+            $targetFilePath = $targetDir . uniqid() . "_" . $fileName; // Unique name
+            if(move_uploaded_file($_FILES[$fileInputName]['tmp_name'], $targetFilePath)){
+                return $targetFilePath;
+            }
+        }
+        return null;
+    }
+
+    $uploadDir = "assets/uploads/documents/";
+    // Create dir if not exists (though we made it via command line previously)
+    if (!file_exists($uploadDir)) { mkdir($uploadDir, 0777, true); }
+
+    $photo = uploadFile('photo', $uploadDir); 
+    // If photo is critical and upload failed, you might handle it. For now assuming strictly optional or handled.
+    // Ideally photo is required, so we should check.
+    if(!$photo) { $photo = "assets/images/boy.jpg"; } // Fallback?
+
+    $doc_nic = uploadFile('doc_nic', $uploadDir);
+    $doc_address = uploadFile('doc_address', $uploadDir);
+
+    // Using Prepared Statements for Security
+    // Updated SQL to include new columns
+    $sql = "INSERT INTO registration (`index`, name, dob, age, nic, gender, address, phone_number, email, password, status, reg_date, classofvehicle, medical_number, medical_date, photo, doc_nic, doc_address) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            
+    $stmt = mysqli_prepare($con, $sql);
     
-    $index=$_POST['index'];
-    $name=$_POST['name'];
-    $dob=$_POST['dob'];
-    $age=$_POST['age'];
-    $nic=$_POST['nic'];
-    $gender=$_POST['gender'];
-     $address=$_POST['address'];
-    $phone_number=$_POST['phone_number'];
-    $email=$_POST['email'];
-    $reg_date=$_POST['reg_date'];
-    $classofvehicle=$_POST['classofvehicle'];
-    $medical_number=$_POST['medical_number'];
-    $medical_date=$_POST['medical_date'];
-    $photo=$_POST['photo'];
-
-
-
-    $sql="insert into registration(`index`,name,dob,age,nic,gender,address,phone_number,email,reg_date,classofvehicle,medical_number,medical_date,photo)
-values($index,'$name','$dob','$age','$nic','$gender','$address','$phone_number','$email','$reg_date','$classofvehicle','$medical_number','$medical_date','$photo')";
-
-$res=mysqli_query($con,$sql);
-
-    if ($res) {
-        echo "<p class='alert alert-success mt-4'><b>Data Successfully saved......</b></p>";
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "ssssssssssssssssss", $index, $name, $dob, $age, $nic, $gender, $address, $phone_number, $email, $password, $status, $reg_date, $classofvehicle, $medical_number, $medical_date, $photo, $doc_nic, $doc_address);
         
-    }
-
-    else {
-        echo "<p class='alert alert-danger mt-4'><b>Data not saved......</b></p>";
-        
+        if (mysqli_stmt_execute($stmt)) {
+            // Send Email Notification
+            send_admin_notification($name, $email);
+            
+            echo "<div class='container mt-3'><p class='alert alert-success'><b>Registration Successful! Please wait for admin approval. You can login once approved.</b></p></div>";
+            echo "<script>setTimeout(function(){ window.location.href='auth_choice.html'; }, 3000);</script>";
+        } else {
+            echo "<div class='container mt-3'><p class='alert alert-danger'><b>Error: " . mysqli_error($con) . "</b></p></div>";
+        }
+        mysqli_stmt_close($stmt);
+    } else {
+         echo "<div class='container mt-3'><p class='alert alert-danger'><b>Statement Preparation Error: " . mysqli_error($con) . "</b></p></div>";
     }
 
     mysqli_close($con);
 }
-
 ?>

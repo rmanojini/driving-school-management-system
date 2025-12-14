@@ -7,7 +7,7 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> 
-    <link rel="stylesheet" type="text/css" href="login.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/login.css">
     
 </head>
 <body>
@@ -34,7 +34,7 @@
 
         <?php
         if(isset($_POST['submit'])){
-            include 'connection.php';
+            include 'includes/connection.php';
 
             $un=$_POST['un'];
             $pw=$_POST['pw'];
