@@ -5,114 +5,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Alex Driving School</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* --- 1. Global Setup (Colors and Fonts) --- */
+        /* --- 1. Global Setup (High Contrast: White BG + Navy Cards) --- */
         :root {
-            --dark-bg: #1A1A2E;
-            --sidebar-bg: #162447;
-            --primary-blue: #0077B6;
-            --secondary-cyan: #00B4D8;
-            --text-light: #E0E0E0;
-            --card-bg: #212A3E;
-            --danger-color: #EF476F;
-            --success-color: #6A994E;
-            --white-color: #FFFFFF;
-            --warning-color: #ffd166;
+            /* Backgrounds */
+            --bg-body: #ffffff;
+            /* PURE WHITE Background */
+            --bg-sidebar: #f8f9fa;
+            /* Very Light Gray Sidebar */
+            --card-bg: #0f3460;
+            /* NAVY BLUE Card Background (Preserved) */
+
+            /* Accents */
+            --primary-color: #e94560;
+            --secondary-color: #4361ee;
+
+            /* Text Colors */
+            --text-main: #333333;
+            /* Dark Text for White Background */
+            --text-card: #ffffff;
+            /* White Text for Navy Cards */
+            --text-muted: #666666;
+            /* Gray Text for placeholders */
+            --text-card-muted: #e0e0e0;
+            /* Light Gray for Card placeholders */
+
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 20px 25px rgba(0, 0, 0, 0.15);
         }
 
-        /* Keyframes for animations */
-        @keyframes fadeInSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideInLeft {
-            from {
-                transform: translateX(-100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: translateX(0);
-            }
-
-            50% {
-                transform: translateX(4px);
-            }
-
-            100% {
-                transform: translateX(0);
-            }
+        * {
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            overflow-x: hidden;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
         }
 
-        /* --- 2. Main Layout (Dashboard Grid) --- */
+        /* --- 2. Layout Structure --- */
         .dashboard-container {
             display: grid;
-            grid-template-columns: 250px 1fr;
-            min-height: 100vh;
+            grid-template-columns: 260px 1fr;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
         }
 
-        /* --- 3. Sidebar Styles --- */
+        /* --- 3. Sidebar --- */
         .sidebar {
-            background-color: var(--sidebar-bg);
-            padding: 20px 0;
-            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.6);
-            position: fixed;
+            background-color: var(--bg-sidebar);
             height: 100%;
-            width: 250px;
-            overflow-y: auto;
-            z-index: 20;
-            animation: slideInLeft 0.5s ease-out;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #e1e4e8;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+            z-index: 10;
         }
 
         .logo {
-            padding: 0 20px 30px;
+            padding: 30px 20px;
             text-align: center;
+            border-bottom: 1px solid #e1e4e8;
         }
 
         .logo h2 {
             margin: 0;
-            font-size: 1.8em;
-            color: var(--secondary-cyan);
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-shadow: 0 0 5px rgba(0, 180, 216, 0.5);
+            font-size: 1.6em;
+            font-weight: 700;
+            color: #0f3460;
+            /* Navy Logo Text */
+            letter-spacing: 0.5px;
+        }
+
+        .logo h2 span {
+            color: var(--primary-color);
+        }
+
+        .nav-menu {
+            flex: 1;
+            overflow-y: auto;
+            padding-top: 20px;
         }
 
         .nav-menu ul {
@@ -121,272 +102,342 @@
             margin: 0;
         }
 
+        .nav-menu li {
+            margin-bottom: 5px;
+        }
+
         .nav-menu a {
             display: flex;
             align-items: center;
-            padding: 15px 20px;
-            color: var(--text-light);
+            padding: 14px 25px;
+            color: #555;
+            /* Dark Gray Links */
             text-decoration: none;
-            font-size: 1em;
-            font-weight: 600;
-            border-left: 5px solid transparent;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-weight: 500;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+            border-radius: 10px;
         }
 
         .nav-menu a i {
             margin-right: 15px;
             font-size: 1.2em;
-            color: var(--primary-blue);
-            transition: color 0.4s ease;
+            width: 25px;
+            text-align: center;
+            color: #888;
         }
 
         .nav-menu a:hover,
         .nav-menu a.active {
-            background-color: rgba(0, 119, 182, 0.25);
-            border-left: 5px solid var(--secondary-cyan);
-            color: var(--white-color);
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--secondary-color);
+            border-left: 3px solid var(--secondary-color);
         }
 
+        .nav-menu a:hover i,
         .nav-menu a.active i {
-            color: var(--secondary-cyan);
+            color: var(--secondary-color);
             transform: scale(1.1);
         }
 
-        /* --- 4. Main Content Area --- */
-        .main-content {
-            margin-left: 250px;
-            padding: 40px;
-            flex-grow: 1;
-            width: calc(100% - 250px);
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+        .logout-link {
+            padding: 20px;
+            border-top: 1px solid #e1e4e8;
         }
 
-        .main-header {
+        .logout-link a {
+            color: #ff6b6b !important;
+            background-color: rgba(255, 107, 107, 0.1) !important;
+            justify-content: center;
+        }
+
+        /* --- 4. Main Content --- */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 25px 35px;
+            overflow: hidden;
+        }
+
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
-            border-bottom: 2px solid var(--card-bg);
-            padding-bottom: 20px;
-            width: 100%;
-            animation: fadeIn 0.8s ease-out;
+            margin-bottom: 25px;
+            flex-shrink: 0;
+            color: var(--text-main);
         }
 
-        .main-header h1 {
-            font-size: 2.5em;
-            font-weight: 800;
-            color: var(--text-light);
+        .welcome-text h1 {
             margin: 0;
+            font-size: 2em;
+            font-weight: 700;
+            color: #0f3460;
+            /* Navy Heading */
+        }
+
+        .welcome-text p {
+            margin: 5px 0 0;
+            color: var(--text-muted);
+            font-size: 0.9em;
         }
 
         .user-profile {
             display: flex;
             align-items: center;
             gap: 15px;
+            background: #fff;
+            padding: 8px 15px;
+            border-radius: 50px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #e1e4e8;
         }
 
         .user-profile img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            border: 2px solid var(--secondary-cyan);
-            transition: transform 0.3s ease;
-        }
-
-        .user-profile img:hover {
-            transform: rotate(5deg) scale(1.1);
+            object-fit: cover;
+            border: 2px solid var(--secondary-color);
         }
 
         .user-profile span {
-            font-weight: 700;
-            color: var(--secondary-cyan);
+            font-weight: 600;
+            font-size: 0.9em;
+            color: var(--text-main);
         }
 
-        /* --- 5. Content Grid (For the feature cards) --- */
+        /* --- 5. Dashboard Grid --- */
+        .grid-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
         .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            width: 90%;
-            max-width: 1300px;
-            margin: 0;
-            align-items: stretch;
-            padding: 25px 0;
-
-            /* ADDED: This helps ensure all rows are uniform, making children equal height */
-            grid-auto-rows: 1fr;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 1fr 1fr;
+            /* Two equal rows */
+            gap: 25px;
+            height: 100%;
+            width: 100%;
         }
 
-        .container {
-            width: 90%;
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 25px 0;
-        }
-
+        /* Card Design (Navy Blue) */
         .feature-card {
-            background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease, border-top-color 0.4s ease;
-
-            /* IMPORTANT: Ensure card is a flex container and grows to fill grid space */
+            background: var(--card-bg);
+            /* NAVY BLUE */
+            border-radius: 20px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
-
-            /* The card will now use the full height given by the grid (1fr) */
-            min-height: 220px;
-
-            border-top: 5px solid var(--primary-blue);
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+            border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            animation: fadeInSlideUp 0.8s ease-out;
-        }
-
-        /* NEW: Use flex: 1 on the details section so it takes up available vertical space, pushing the action button to the bottom */
-        .feature-card .card-details {
-            flex: 1;
-            /* Allows the detail section to grow and push card-action down */
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-
-
-        .feature-grid .feature-card:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-
-        .feature-grid .feature-card:nth-child(3) {
-            animation-delay: 0.2s;
-        }
-
-        .feature-grid .feature-card:nth-child(4) {
-            animation-delay: 0.3s;
-        }
-
-        .feature-grid .feature-card:nth-child(5) {
-            animation-delay: 0.4s;
+            position: relative;
+            overflow: hidden;
         }
 
         .feature-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 119, 182, 0.5);
-            border-top-color: var(--secondary-cyan);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
         }
 
-        .card-icon i {
-            font-size: 3.5em;
-            margin-bottom: 15px;
-            color: var(--primary-blue);
-            transition: transform 0.3s ease;
+        /* Colorful Accents for Cards */
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--primary-color);
+            opacity: 1;
+            transition: width 0.3s ease;
         }
 
-        .feature-card:hover .card-icon i {
-            transform: scale(1.1);
+        .feature-card:hover::before {
+            width: 10px;
         }
 
-        .card-icon.red i {
-            color: var(--danger-color);
+        .feature-card:nth-child(2)::before {
+            background: #4cc9f0;
         }
 
-        .card-icon.cyan i {
-            color: var(--secondary-cyan);
+        .feature-card:nth-child(3)::before {
+            background: #4895ef;
         }
 
-        .card-icon.green i {
-            color: var(--success-color);
+        .feature-card:nth-child(4)::before {
+            background: #fee440;
         }
 
-        .card-icon.warning i {
-            color: var(--warning-color);
+        .feature-card:nth-child(5)::before {
+            background: #f72585;
         }
 
-        .card-details h3 {
-            margin: 0 0 10px;
-            font-size: 1.5em;
-            font-weight: 800;
-            color: var(--text-light);
+        .feature-card:nth-child(6)::before {
+            background: #00bbf9;
         }
 
-        .card-details p {
-            margin: 0;
-            color: #A0A0A0;
-            font-size: 0.95em;
-            /* Added margin-top to separate paragraph from H3 */
-            margin-top: 5px;
-        }
-
-        .card-action {
-            margin-top: 20px;
-            font-size: 0.9em;
-            font-weight: 700;
-            color: var(--secondary-cyan);
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            /* Transparent White */
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: gap 0.3s ease;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--text-card);
+            /* White Icon Text */
+            font-size: 1.8em;
+            transition: transform 0.3s ease, background 0.3s;
         }
 
-        .feature-card:hover .card-action {
-            gap: 12px;
+        .feature-card:hover .icon-box {
+            transform: scale(1.1) rotate(5deg);
+            background: rgba(255, 255, 255, 0.2);
         }
 
-        .feature-card:hover .card-action i {
-            animation: pulse 1s infinite;
+        /* Customizing Icon Colors - Use White or Accent? User asked for Navy Cards. White icons look best on Navy. */
+        .feature-card:nth-child(1) .icon-box i {
+            color: #e94560;
         }
 
-        /* Quick Overview Section Specific Styling */
-        #quick-overview-card {
-            border-top-color: var(--warning-color) !important;
-            animation-delay: 0.5s !important;
-            /* Override min-height to allow this single row card to be flexible */
-            min-height: auto;
+        .feature-card:nth-child(2) .icon-box i {
+            color: #4cc9f0;
         }
 
-        /* --- 6. Responsive Design --- */
+        .feature-card:nth-child(3) .icon-box i {
+            color: #4895ef;
+        }
 
-        /* Large Screens: Allow 3+ columns */
-        @media (min-width: 1400px) {
-            .feature-grid:not(:last-of-type) {
-                grid-template-columns: repeat(3, 1fr);
+        .feature-card:nth-child(4) .icon-box i {
+            color: #fee440;
+        }
+
+        .feature-card:nth-child(5) .icon-box i {
+            color: #f72585;
+        }
+
+        .feature-card:nth-child(6) .icon-box i {
+            color: #00bbf9;
+        }
+
+
+        .card-content h3 {
+            margin: 0 0 10px;
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--text-card);
+            /* WHITE TEXT */
+        }
+
+        .card-content p {
+            margin: 0;
+            font-size: 0.9em;
+            color: var(--text-card-muted);
+            /* Light Gray Text */
+            line-height: 1.5;
+        }
+
+        .action-link {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #ffffff;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.08);
+            /* Frosted glass effect */
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .feature-card:hover .action-link {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .arrow-icon {
+            margin-left: 5px;
+        }
+
+        /* --- 6. Responsive --- */
+        @media (max-width: 1024px) {
+            .feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(3, 1fr);
+                gap: 20px;
             }
         }
 
-        /* Tablet Screens: Stack content */
-        @media (max-width: 900px) {
+        @media (max-width: 768px) {
+            body {
+                height: auto;
+                overflow: auto;
+            }
+
             .dashboard-container {
-                grid-template-columns: 1fr;
+                display: block;
+                height: auto;
             }
 
             .sidebar {
-                /* (Rest of sidebar styles remain the same for mobile) */
+                position: fixed;
+                top: 0;
+                left: -260px;
+                height: 100vh;
+                transition: left 0.3s ease;
+            }
+
+            .sidebar.active {
+                left: 0;
             }
 
             .main-content {
-                margin-left: 0;
                 padding: 20px;
                 width: 100%;
-                align-items: stretch;
+                height: auto;
+            }
+
+            .grid-container {
+                height: auto;
+                display: block;
+            }
+
+            .feature-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                gap: 15px;
             }
 
             .feature-card {
                 min-height: 180px;
-                /* Reduced min-height for mobile view */
             }
 
-            /* Menu for Mobile styles remain the same */
+            .menu-btn {
+                display: block !important;
+            }
         }
 
-        /* Mobile Screens: Force 1 column for cards */
-        @media (max-width: 650px) {
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
+        .menu-btn {
+            display: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #333;
         }
     </style>
 </head>
@@ -395,136 +446,117 @@
 
     <div class="dashboard-container">
 
-        <aside class="sidebar" role="navigation">
+        <aside class="sidebar" id="sidebar">
             <div class="logo">
-                <h2>Alex **Dashboard**</h2>
+                <h2>Alex <span>Admin</span></h2>
             </div>
 
             <nav class="nav-menu">
                 <ul>
-                    <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i>Dashboard Home</a></li>
-                    <li><a href="registration.php"><i class="fas fa-user-plus"></i>Registration</a></li>
-                    <li><a href="#"><i class="fas fa-users"></i>Student Details</a></li>
-                    <li><a href="admin/pending_approvals.php"><i class="fas fa-check-circle"></i>Approvals</a></li>
-                    <li><a href="admin/payments.php"><i class="fas fa-receipt"></i>Payment Details</a></li>
-                    <li><a href="admin/schedule.php"><i class="fas fa-calendar-alt"></i>Scheduling</a></li>
-                    <li><a href="admin/results.php"><i class="fas fa-chart-bar"></i>Results & Grades</a></li>
-                    <li><a href="admin/reports.php"><i class="fas fa-file-invoice"></i>Reports</a></li>
-                    <li><a href="index.html"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+                    <li><a href="#" class="active"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                    <li><a href="registration.php"><i class="fas fa-user-plus"></i> New Registration</a></li>
+                    <li><a href="admin/student_details.php"><i class="fas fa-users"></i> Student Details</a></li>
+                    <li><a href="admin/pending_approvals.php"><i class="fas fa-tasks"></i> Approvals</a></li>
+                    <li><a href="admin/payments.php"><i class="fas fa-file-invoice-dollar"></i> Payments</a></li>
+                    <li><a href="admin/schedule.php"><i class="fas fa-calendar-check"></i> Scheduling</a></li>
+                    <li><a href="admin/results.php"><i class="fas fa-graduation-cap"></i> Exam Results</a></li>
+                    <li><a href="admin/reports.php"><i class="fas fa-chart-pie"></i> Reports</a></li>
                 </ul>
+
+                <div class="logout-link">
+                    <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
             </nav>
         </aside>
 
-        <main class="main-content" role="main">
-
-            <header class="main-header">
-                <h1>Welcome, Admin!</h1>
+        <main class="main-content">
+            <header class="header">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <i class="fas fa-bars menu-btn" onclick="toggleSidebar()"></i>
+                    <div class="welcome-text">
+                        <h1>Dashboard</h1>
+                        <p>Welcome back, Raja Alex!</p>
+                    </div>
+                </div>
                 <div class="user-profile">
-                    <img src="assets/images/boy.jpg" alt="Admin Image" />
+                    <img src="assets/images/boy.jpg" alt="User">
                     <span>Raja Alex</span>
                 </div>
             </header>
 
-            <section class="feature-grid">
+            <div class="grid-container">
+                <div class="feature-grid">
 
-                <div class="feature-card" onclick="handleCardClick(this)">
-                    <div class="card-icon"><i class="fas fa-user-plus"></i></div>
-                    <div class="card-details">
-                        <h3>New Student Registration</h3>
-                        <p>Register new student profiles and course selections.</p>
-                    </div>
-                    <div class="card-action" onclick="window.location.href='registration.php'">Go to Admin Form <i
-                            class="fas fa-arrow-right"></i></div>
-                </div>
-
-                <div class="feature-card" onclick="handleCardClick(this)">
-                    <div class="card-icon cyan"><i class="fas fa-users"></i></div>
-                    <div class="card-details">
-                        <h3>Pending Approvals</h3>
-                        <p>Approve or Reject new student registrations.</p>
-                    </div>
-                    <div class="card-action" onclick="window.location.href='admin/pending_approvals.php'">View Pending
-                        Approvals <i class="fas fa-arrow-right"></i></div>
-                </div>
-
-                <div class="feature-card" onclick="handleCardClick(this)">
-                    <div class="card-icon green"><i class="fas fa-receipt"></i></div>
-                    <div class="card-details">
-                        <h3>Payment Tracking</h3>
-                        <p>Manage fee payments, invoices, and financial records.</p>
-                    </div>
-                    <div class="card-action" onclick="window.location.href='admin/payments.php'">Manage Payments <i
-                            class="fas fa-arrow-right"></i></div>
-                </div>
-
-                <div class="feature-card" onclick="handleCardClick(this)">
-                    <div class="card-icon"><i class="fas fa-chart-bar"></i></div>
-                    <div class="card-details">
-                        <h3>Exam Results & Grades</h3>
-                        <p>Input and view theory and practical exam results.</p>
-                    </div>
-                    <div class="card-action" onclick="window.location.href='admin/results.php'">View Analytics <i
-                            class="fas fa-arrow-right"></i></div>
-                </div>
-
-                <div class="feature-card" onclick="handleCardClick(this)">
-                    <div class="card-icon red"><i class="fas fa-user-cog"></i></div>
-                    <div class="card-details">
-                        <h3>System Reports</h3>
-                        <p>View income, student stats, and pass rates.</p>
-                    </div>
-                    <div class="card-action" onclick="window.location.href='admin/reports.php'">View Reports <i
-                            class="fas fa-arrow-right"></i></div>
-                </div>
-
-            </section>
-
-            <section style="margin-top: 50px; width: 100%;">
-                <h2 style="animation: fadeIn 0.8s ease-out 0.6s backwards;">Quick Overview</h2>
-
-                <div class="feature-grid" style="grid-template-columns: 1fr;">
-                    <div class="feature-card" id="quick-overview-card" onclick="handleCardClick(this)">
-                        <div class="card-icon warning"><i class="fas fa-lightbulb"></i></div>
-                        <div class="card-details" style="flex: 1 1 auto;">
-                            <p style="color: var(--text-light); margin-bottom: 5px;">This is a placeholder for charts,
-                                pending tasks, or recent activity logs.</p>
-                            <p style="color: var(--warning-color); font-weight: 700;">Add your key performance
-                                indicators (KPIs) here!</p>
+                    <!-- 1. New Registration -->
+                    <div class="feature-card" onclick="location.href='registration.php'">
+                        <div class="icon-box"><i class="fas fa-user-plus"></i></div>
+                        <div class="card-content">
+                            <h3>Register Student</h3>
+                            <p>Enroll new students, assign courses and create profiles.</p>
                         </div>
+                        <div class="action-link">Open Form <i class="fas fa-arrow-right arrow-icon"></i></div>
                     </div>
-                </div>
-            </section>
 
+                    <!-- 2. Student Details -->
+                    <div class="feature-card" onclick="location.href='admin/student_details.php'">
+                        <div class="icon-box"><i class="fas fa-users"></i></div>
+                        <div class="card-content">
+                            <h3>Student Profiles</h3>
+                            <p>View detail records, payments and history of all students.</p>
+                        </div>
+                        <div class="action-link">View Database <i class="fas fa-arrow-right arrow-icon"></i></div>
+                    </div>
+
+                    <!-- 3. Payments -->
+                    <div class="feature-card" onclick="location.href='admin/payments.php'">
+                        <div class="icon-box"><i class="fas fa-wallet"></i></div>
+                        <div class="card-content">
+                            <h3>Payments & Fees</h3>
+                            <p>Track student payments, dues and generate invoices.</p>
+                        </div>
+                        <div class="action-link">Manage Finance <i class="fas fa-arrow-right arrow-icon"></i></div>
+                    </div>
+
+                    <!-- 4. Results -->
+                    <div class="feature-card" onclick="location.href='admin/results.php'">
+                        <div class="icon-box"><i class="fas fa-trophy"></i></div>
+                        <div class="card-content">
+                            <h3>Results Center</h3>
+                            <p>Update exam marks and check student pass/fail status.</p>
+                        </div>
+                        <div class="action-link">Update Marks <i class="fas fa-arrow-right arrow-icon"></i></div>
+                    </div>
+
+                    <!-- 5. Reports -->
+                    <div class="feature-card" onclick="location.href='admin/reports.php'">
+                        <div class="icon-box"><i class="fas fa-chart-line"></i></div>
+                        <div class="card-content">
+                            <h3>System Reports</h3>
+                            <p>Analyze performance, admission rates and revenue.</p>
+                        </div>
+                        <div class="action-link">View Analytics <i class="fas fa-arrow-right arrow-icon"></i></div>
+                    </div>
+
+                    <!-- 6. Overview (Placeholder/Approvals) -->
+                    <div class="feature-card" onclick="location.href='admin/pending_approvals.php'">
+                        <div class="icon-box"><i class="fas fa-clipboard-check"></i></div>
+                        <div class="card-content">
+                            <h3>Pending Actions</h3>
+                            <p>Review and approve strictly pending registrations.</p>
+                        </div>
+                        <div class="action-link">Check Now <i class="fas fa-arrow-right arrow-icon"></i></div>
+                    </div>
+
+                </div>
+            </div>
         </main>
     </div>
 
     <script>
-        // Sidebar Active Link Functionality
-        document.addEventListener('DOMContentLoaded', () => {
-            const navLinks = document.querySelectorAll('.nav-menu a');
-
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-
-                    // Remove 'active' class from all links
-                    navLinks.forEach(l => l.classList.remove('active'));
-
-                    // Add 'active' class to the clicked link
-                    link.classList.add('active');
-                });
-            });
-        });
-
-        // Handle card click without alert
-        function handleCardClick(card) {
-            // Quick visual feedback by temporarily changing opacity
-            card.style.opacity = '0.7';
-            setTimeout(() => {
-                card.style.opacity = '1';
-            }, 150);
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
         }
     </script>
-
 </body>
 
 </html>
