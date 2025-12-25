@@ -15,8 +15,9 @@ if(mysqli_query($con, $sql)){
     echo "<p style='color:red'>✘ Error checking table: " . mysqli_error($con) . "</p>";
 }
 
-// 2. Define Columns to Check/Add
+// 2. Define Columns to Check/Add for onlineapplication
 $columns = [
+    'username' => "VARCHAR(50) NULL UNIQUE AFTER name", // Ensure username is added
     'password' => "VARCHAR(255) NOT NULL DEFAULT ''",
     'status' => "VARCHAR(20) DEFAULT 'pending'",
     'classofvehicle' => "VARCHAR(50) NOT NULL DEFAULT ''",
@@ -31,32 +32,54 @@ $columns = [
     'reg_date' => "DATE NULL"
 ];
 
-foreach ($columns as $column => $definition) {
-    // Check if column exists
-    $check = mysqli_query($con, "SHOW COLUMNS FROM `onlineapplication` LIKE '$column'");
-    if(mysqli_num_rows($check) == 0){
-        // Column missing, ADD IT
-        $alter = "ALTER TABLE `onlineapplication` ADD COLUMN `$column` $definition";
-        if(mysqli_query($con, $alter)){
-            echo "<p style='color:green'>✔ Column `$column` added successfully.</p>";
+function checkAndFixTable($con, $tableName, $columns) {
+    echo "<h3>Checking table: $tableName</h3>";
+    foreach ($columns as $column => $definition) {
+        // Check if column exists
+        $check = mysqli_query($con, "SHOW COLUMNS FROM `$tableName` LIKE '$column'");
+        if(mysqli_num_rows($check) == 0){
+            // Column missing, ADD IT
+            $alter = "ALTER TABLE `$tableName` ADD COLUMN `$column` $definition";
+            if(mysqli_query($con, $alter)){
+                echo "<p style='color:green'>✔ Column `$column` added to $tableName successfully.</p>";
+            } else {
+                echo "<p style='color:red'>✘ Error adding `$column` to $tableName: " . mysqli_error($con) . "</p>";
+            }
         } else {
-            echo "<p style='color:red'>✘ Error adding `$column`: " . mysqli_error($con) . "</p>";
+            echo "<p style='color:blue'>ℹ Column `$column` already exists in $tableName.</p>";
         }
-    } else {
-        echo "<p style='color:blue'>ℹ Column `$column` already exists. Skipped.</p>";
     }
 }
 
-    }
+// Fix onlineapplication
+checkAndFixTable($con, 'onlineapplication', $columns);
+
+// Fix registration table (Add username)
+$reg_columns = [
+    'username' => "VARCHAR(50) NULL UNIQUE AFTER name"
+];
+checkAndFixTable($con, 'registration', $reg_columns);
+
+// Backfill usernames if empty
+$backfill = "UPDATE registration SET username = nic WHERE username IS NULL OR username = ''";
+if(mysqli_query($con, $backfill)) {
+    echo "<p style='color:green'>✔ Backfilled usernames in registration table.</p>";
 }
 
-echo "<h3>Current Table Structure:</h3><pre>";
+echo "<h3>Current Table Structure (onlineapplication):</h3><pre>";
 $result = mysqli_query($con, "DESCRIBE `onlineapplication`");
 while($row = mysqli_fetch_assoc($result)){
     print_r($row);
 }
 echo "</pre>";
 
-echo "<h3>Database Fix Complete. Please check the 'Field' names above. One of them is your Primary Key (likely 'id' or 'index').</h3>";
+echo "<h3>Current Table Structure (registration):</h3><pre>";
+$result = mysqli_query($con, "DESCRIBE `registration`");
+while($row = mysqli_fetch_assoc($result)){
+    print_r($row);
+}
+echo "</pre>";
+
+echo "<h3>Database Fix Complete.</h3>";
 echo "<a href='index.html'>Go to Home</a>";
 ?>

@@ -8,9 +8,21 @@ include '../includes/connection.php';
     $marks = $_POST['marks'];
     $result_status = $_POST['result_status'];
 
-    if($marks > 40){
+    // Check for Duplicates
+    $check_sql = "SELECT * FROM results WHERE student_id = ? AND exam_type = ?";
+    $check_stmt = mysqli_prepare($con, $check_sql);
+    mysqli_stmt_bind_param($check_stmt, "ss", $student_id, $exam_type);
+    mysqli_stmt_execute($check_stmt);
+    mysqli_stmt_store_result($check_stmt);
+    
+    if(mysqli_stmt_num_rows($check_stmt) > 0){
+        echo "<script>alert('Error: Result already exists for this student and exam type!'); window.location.href='results.php';</script>";
+        mysqli_stmt_close($check_stmt);
+    } elseif($marks > 40){
          echo "<script>alert('Error: Marks cannot be greater than 40!');</script>";
+         mysqli_stmt_close($check_stmt);
     } else {
+        mysqli_stmt_close($check_stmt);
         $sql = "INSERT INTO results (student_id, exam_type, exam_date, marks, result_status) VALUES (?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($con, $sql);
         mysqli_stmt_bind_param($stmt, "sssis", $student_id, $exam_type, $exam_date, $marks, $result_status);

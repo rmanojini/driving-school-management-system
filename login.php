@@ -22,12 +22,12 @@ session_start();
             
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" required placeholder="Please Enter Your Username">
+                <input type="text" id="username" name="username" required placeholder="Please Enter Your Username" autocomplete="off">
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required placeholder="Please Enter Your Password">
+                <input type="password" id="password" name="password" required placeholder="Please Enter Your Password" autocomplete="new-password">
             </div>
 
             <button type="submit" name="submit" class="login-btn" value="Login">
@@ -52,10 +52,13 @@ session_start();
 
             }
             else{
+                $row = mysqli_fetch_assoc($res);
+                // Try to get a name, otherwise fallback to username
+                $admin_name = isset($row['name']) ? $row['name'] : $un;
+                $_SESSION['admin_name'] = $admin_name;
+                $_SESSION['xusername'] = $un;
 
-                $_SESSION['xusername']=$un;
-
-                echo "<script>window.location.href='dashboard.html';</script>";
+                echo "<script>window.location.href='dashboard.php';</script>";
 
             }
         }

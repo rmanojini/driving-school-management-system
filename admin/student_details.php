@@ -14,15 +14,15 @@ include '../includes/connection.php';
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="text-primary fw-bold"><i class="fas fa-users"></i> Registered Students</h2>
-        <a href="../dashboard.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        <h2 style="color: #0f3460;" class="fw-bold"><i class="fas fa-users"></i> Registered Students</h2>
+        <a href="../welcome_splash.php" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
     </div>
 
     <div class="card shadow-sm border-0">
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
-                    <thead class="table-primary">
+                    <thead class="text-white" style="background-color: #0f3460;">
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
@@ -49,7 +49,7 @@ include '../includes/connection.php';
                                 echo "<td>" . $row['classofvehicle'] . "</td>";
                                 echo "<td><span class='badge $status_badge'>" . ucfirst($row['status']) . "</span></td>";
                                 echo "<td>
-                                        <a href='view_student.php?id=" . $row['index'] . "' class='btn btn-sm btn-info text-white'>
+                                        <a href='view_student.php?id=" . $row['index'] . "' class='btn btn-sm text-white' style='background-color: #0f3460;'>
                                             <i class='fas fa-eye'></i> View Profile
                                         </a>
                                       </td>";

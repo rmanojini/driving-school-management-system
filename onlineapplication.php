@@ -26,11 +26,14 @@
                 age--;
             }
             
-            if (age >= 0) {
+           if (age >= 18) {
                 ageInput.value = age;
             } else {
-                ageInput.value = ''; 
-                alert("Date of birth cannot be in the future.");
+                ageInput.value = age;
+                alert("Sorry, you must be 18 years or older to register.");
+                // Optionally clear DOB or Age to force correction
+                // document.getElementById('dob').value = '';
+                // ageInput.value = '';
             }
         } else {
             ageInput.value = '';
@@ -96,6 +99,8 @@
                          <label for="nic" class="form-label">National ID Card (NIC)</label>
                         <input type="text" class="form-control" id="nic" name="nic" placeholder="Enter NIC number" required>
                     </div>
+
+                    
                     
                     <!-- Added Password Field for Login -->
                     <!-- Added Password Field for Login with Toggle -->
@@ -126,6 +131,12 @@
                          <label for="email" class="form-label">Email Address</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
                     </div>
+
+                    <div class="col-md-6">
+                         <label for="username" class="form-label">Username (For Login)</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Create a unique username" required>
+                    </div>
+
 
                     <div class="col-md-6">
                         <label for="password" class="form-label">Create Password</label>
@@ -205,7 +216,21 @@
     $address = $_POST['address'];
     $phone_number = $_POST['phone_number'];
     $email = $_POST['email'];
-    $raw_password = $_POST['password'] ?? $nic; // Default to NIC if password missing 
+    
+    // BACKEND Validation: Age must be 18+
+    if($age < 18){
+         echo "<script>alert('Registration Failed: You must be 18 years or older to register.'); window.location.href='index.html';</script>";
+         exit();
+    }
+    
+    // Option 1: User enters username manually, allow duplicate NIC but unique username
+    $username = $_POST['username']; 
+    
+    $raw_password = $_POST['password']; // Capture password input
+    if(empty($raw_password) && !empty($nic)){
+         $raw_password = $nic; // Fallback to NIC if empty (though required in form)
+    }
+    
     $password = password_hash($raw_password, PASSWORD_DEFAULT);
     $reg_date = date('Y-m-d'); // Auto-set date
     $classofvehicle = $_POST['classofvehicle'];
@@ -215,39 +240,41 @@
     $doc_nic = NULL;
     $doc_address = NULL;
 
-    // Check for Duplicates (NIC or Email)
-    $check_sql = "SELECT nic, email FROM registration WHERE nic = ? OR email = ?";
+    // Check for Duplicate USERNAME only (allow same NIC with different username)
+    $check_sql = "SELECT username FROM registration WHERE username = ?";
     $check_stmt = mysqli_prepare($con, $check_sql);
-    mysqli_stmt_bind_param($check_stmt, "ss", $nic, $email);
+    mysqli_stmt_bind_param($check_stmt, "s", $username);
     mysqli_stmt_execute($check_stmt);
     mysqli_stmt_store_result($check_stmt);
     
     if(mysqli_stmt_num_rows($check_stmt) > 0){
-        echo "<script>alert('Error: A student with this NIC or Email already exists!');</script>";
+        echo "<script>alert('Error: This Username already exists! Please choose a different username.');</script>";
         mysqli_stmt_close($check_stmt);
     } else {
         mysqli_stmt_close($check_stmt);
 
-        // SQL INSERT INTO onlineapplication (Temporary Table)
-        // Explicitly inserting NULL for doc columns
-        $sql="INSERT INTO onlineapplication (name, dob, age, nic, gender, address, phone_number, email, password, status, reg_date, classofvehicle, doc_nic, doc_address)
+        // SQL INSERT INTO onlineapplication.
+        // Columns: name, dob, age, nic, username, gender, address, phone_number, email, password, reg_date, classofvehicle, doc_nic, doc_address (14 cols)
+        // REMOVED 'status' column per user request
+        $sql="INSERT INTO onlineapplication (name, dob, age, nic, username, gender, address, phone_number, email, password, reg_date, classofvehicle, doc_nic, doc_address)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    $stmt = mysqli_prepare($con, $sql);
-    if($stmt) {
-        mysqli_stmt_bind_param($stmt, "ssssssssssssss", $name, $dob, $age, $nic, $gender, $address, $phone_number, $email, $password, $status, $reg_date, $classofvehicle, $doc_nic, $doc_address);
-        
-        if (mysqli_stmt_execute($stmt)) {
-             // Send Email
-             send_admin_notification($name, $email, $phone_number);
-             echo "<script>alert('Data Successfully saved! Please wait for approval.'); window.location.href='index.html';</script>";
+        $stmt = mysqli_prepare($con, $sql);
+        if($stmt) {
+            // Correct bind_param: 14 's' chars for 14 variables (Removed 1 's' for status)
+            mysqli_stmt_bind_param($stmt, "ssssssssssssss", $name, $dob, $age, $nic, $username, $gender, $address, $phone_number, $email, $password, $reg_date, $classofvehicle, $doc_nic, $doc_address);
+            
+            if (mysqli_stmt_execute($stmt)) {
+                 // Send Email
+                 send_admin_notification($name, $email, $phone_number);
+                 echo "<script>alert('Data Successfully saved! Please wait for approval. Use your NIC as Username for login.'); window.location.href='index.html';</script>";
+            } else {
+                 echo "<script>alert('Data not saved: " . mysqli_error($con) . "');</script>";
+            }
+            mysqli_stmt_close($stmt);
         } else {
-             echo "<script>alert('Data not saved: " . mysqli_error($con) . "');</script>";
+            echo "<script>alert('Database Error: " . mysqli_error($con) . "');</script>";
         }
-        mysqli_stmt_close($stmt);
-    } else {
-        echo "<script>alert('Database Error');</script>";
-    }
     }
     } // End Duplicate Check Else
  // End Isset

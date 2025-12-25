@@ -16,7 +16,7 @@ include '../includes/connection.php';
         <h2 style="color: var(--karuneelam-navy);">Student Exam Results</h2>
         <div>
             <a href="add_result.php" class="btn btn-primary">+ Add Result</a>
-            <a href="../dashboard.html" class="btn btn-secondary">Back to Dashboard</a>
+            <a href="../welcome_splash.php" class="btn btn-secondary">Back to Dashboard</a>
         </div>
     </div>
 

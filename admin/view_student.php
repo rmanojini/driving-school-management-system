@@ -61,7 +61,7 @@ if(isset($_POST['reset_password'])){
 <div class="container mt-5 mb-5">
     <div class="d-flex justify-content-between mb-3">
         <a href="student_details.php" class="btn btn-outline-secondary"><i class="fas fa-arrow-left"></i> Back to List</a>
-        <a href="../dashboard.html" class="btn btn-outline-primary"><i class="fas fa-home"></i> Home</a>
+        <a href="../welcome_splash.php" class="btn btn-outline-primary"><i class="fas fa-home"></i> Home</a>
     </div>
 
     <div class="card shadow border-0">

@@ -23,12 +23,13 @@ include 'includes/connection.php';
 
         <?php
         if(isset($_POST['login'])){
-            $email = mysqli_real_escape_string($con, $_POST['email']);
+            $username = mysqli_real_escape_string($con, $_POST['username']);
             $password = $_POST['password'];
 
             // Using prepared statement for security
-            $stmt = mysqli_prepare($con, "SELECT * FROM registration WHERE email = ?");
-            mysqli_stmt_bind_param($stmt, "s", $email);
+            // Changed lookup to match 'username' column
+            $stmt = mysqli_prepare($con, "SELECT * FROM registration WHERE username = ?");
+            mysqli_stmt_bind_param($stmt, "s", $username);
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
             
@@ -37,7 +38,8 @@ include 'includes/connection.php';
                 if(password_verify($password, $row['password'])){
                     // Check status
                     if($row['status'] == 'approved'){
-                        $_SESSION['student_email'] = $row['email'];
+                        $_SESSION['student_email'] = $row['email']; // Keep email in session just in case
+                        $_SESSION['student_username'] = $row['username']; // Add username to session
                         $_SESSION['student_name'] = $row['name'];
                         header("Location: student_dashboard.php");
                         exit();
@@ -50,7 +52,7 @@ include 'includes/connection.php';
                     echo "<p class='alert alert-danger' style='color: red; font-weight: bold;'>Invalid Password.</p>";
                 }
             } else {
-                echo "<p class='alert alert-danger' style='color: red; font-weight: bold;'>Email not found.</p>";
+                echo "<p class='alert alert-danger' style='color: red; font-weight: bold;'>Username not found.</p>";
             }
             mysqli_stmt_close($stmt);
         }
@@ -58,13 +60,13 @@ include 'includes/connection.php';
 
         <form action="" method="POST" class="login-form">
             <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="text" id="email" name="email" required placeholder="Enter your registered email">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Enter your username" autocomplete="off">
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required placeholder="Enter your password">
+                <input type="password" id="password" name="password" required placeholder="Enter your password" autocomplete="new-password">
             </div>
 
             <button type="submit" name="login" class="login-btn">Login</button>

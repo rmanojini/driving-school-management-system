@@ -27,7 +27,7 @@ $passed_exams = mysqli_fetch_assoc(mysqli_query($con, "SELECT COUNT(*) as c FROM
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 style="color: var(--karuneelam-navy);">System Reports</h2>
-        <a href="../dashboard.html" class="btn btn-secondary">Back to Dashboard</a>
+        <a href="../welcome_splash.php" class="btn btn-secondary">Back to Dashboard</a>
     </div>
 
     <div class="row g-4">

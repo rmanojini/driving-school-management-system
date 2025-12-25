@@ -18,7 +18,7 @@ include '../includes/connection.php';
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 style="color: var(--karuneelam-navy);">Pending Student Approvals</h2>
-        <a href="../dashboard.html" class="btn btn-secondary">Back to Dashboard</a>
+        <a href="../welcome_splash.php" class="btn btn-secondary">Back to Dashboard</a>
     </div>
 
     <div class="card shadow-sm">
@@ -53,8 +53,8 @@ include '../includes/connection.php';
                             echo "<td>" . $row['classofvehicle'] . "</td>";
                             echo "<td>" . $row['reg_date'] . "</td>";
                             echo "<td>
-                                    <a href='approve_user.php?id=" . $id . "' class='btn btn-success btn-sm'>Approve</a>
-                                    <a href='reject_user.php?id=" . $id . "' class='btn btn-danger btn-sm'>Reject</a>
+                                    <a href='approve_user.php?id=" . $id . "' class='btn btn-success btn-sm' onclick='return confirm(\"Are you sure you want to Approve this student?\")'>Approve</a>
+                                    <a href='delete_applicant.php?id=" . $id . "' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to Delete this application?\")'>Delete</a>
                                   </td>";
                             echo "</tr>";
                         }

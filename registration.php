@@ -9,7 +9,7 @@ $search_nic = "";
 // 1. NIC Search Logic
 if(isset($_POST['search_nic_btn']) || isset($_GET['nic'])){
     $search_nic = isset($_GET['nic']) ? $_GET['nic'] : $_POST['search_nic'];
-    $sql = "SELECT * FROM registration WHERE nic = ?";
+    $sql = "SELECT * FROM onlineapplication WHERE nic = ?";
     $stmt = mysqli_prepare($con, $sql);
     if($stmt){
         mysqli_stmt_bind_param($stmt, "s", $search_nic);
@@ -31,6 +31,8 @@ if(isset($_POST['register_btn'])){
     $dob = $_POST['dob'];
     $age = $_POST['age'];
     $nic = $_POST['nic'];
+    // Auto-generate username from NIC if not provided (since we removed the field)
+    $username = $nic; 
     $gender = $_POST['gender'];
     $address = $_POST['address'];
     $phone_number = $_POST['phone_number'];
@@ -41,44 +43,67 @@ if(isset($_POST['register_btn'])){
     // Admin Only Fields
     $medical_number = $_POST['medical_number'];
     $medical_date = $_POST['medical_date'];
+    $learner_permit_no = $_POST['learner_permit_no'];
     
     // Logic: If user exists, we UPDATE. If new (Admin typying manually?), we INSERT.
     // Given the workflow "Admin approves user", we assume UPDATE.
     
     if(!empty($index)) {
-        // UPDATE existing student
-        $status = 'approved';
-        $sql = "UPDATE registration SET name=?, dob=?, age=?, nic=?, gender=?, address=?, phone_number=?, email=?, reg_date=?, classofvehicle=?, medical_number=?, medical_date=?, status='approved' WHERE `index`=?";
+        // UPDATE existing student in onlineapplication ONLY
+        // We do NOT move to registration table yet. We do NOT change status to approved.
         
-        $stmt = mysqli_prepare($con, $sql);
-        mysqli_stmt_bind_param($stmt, "ssssssssssssi", $name, $dob, $age, $nic, $gender, $address, $phone_number, $email, $reg_date, $classofvehicle, $medical_number, $medical_date, $index);
+        $status = 'pending';
         
-        if(mysqli_stmt_execute($stmt)){
-            echo "<script>alert('Student Approved & Updated Successfully!'); window.location.href='admin/pending_approvals.php';</script>";
+        // Update onlineapplication table with new details (medical info, learner permit etc)
+        // Ensure status remains 'pending'
+        $sql2 = "UPDATE onlineapplication SET name=?, dob=?, age=?, nic=?, username=?, gender=?, address=?, phone_number=?, email=?, reg_date=?, classofvehicle=?, medical_number=?, medical_date=?, learner_permit_no=?, status='pending' WHERE nic=?";
+        $stmt2 = mysqli_prepare($con, $sql2);
+        mysqli_stmt_bind_param($stmt2, "sssssssssssssss", $name, $dob, $age, $nic, $username, $gender, $address, $phone_number, $email, $reg_date, $classofvehicle, $medical_number, $medical_date, $learner_permit_no, $nic);
+        
+        if(mysqli_stmt_execute($stmt2)){
+            echo "<script>alert('Student Details Updated! Status is still PENDING. Go to Admin Dashboard -> Approvals to final approve.'); window.location.href='onlineapplication.php';</script>";
         } else {
             echo "<script>alert('Error Updating: " . mysqli_error($con) . "');</script>";
         }
     } else {
-    } else {
         // Fallback: Create NEW student (Walk-in Registration by Admin)
-        $password = password_hash('1234', PASSWORD_DEFAULT); // Default password for offline users
-        $status = 'approved';
+        // CHANGED: Save to onlineapplication (pending) instead of registration (approved)
         
-        // Admin creates new student -> Status Approved immediately
-        $sql = "INSERT INTO registration (name, dob, age, nic, gender, address, phone_number, email, password, status, reg_date, classofvehicle, medical_number, medical_date)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                
-        $stmt = mysqli_prepare($con, $sql);
-        mysqli_stmt_bind_param($stmt, "ssssssssssssss", $name, $dob, $age, $nic, $gender, $address, $phone_number, $email, $password, $status, $reg_date, $classofvehicle, $medical_number, $medical_date);
+        // Check for duplicate NIC in onlineapplication first
+        $check_sql = "SELECT nic FROM onlineapplication WHERE nic = ?";
+        $check_stmt = mysqli_prepare($con, $check_sql);
+        mysqli_stmt_bind_param($check_stmt, "s", $nic);
+        mysqli_stmt_execute($check_stmt);
+        mysqli_stmt_store_result($check_stmt);
         
-        if(mysqli_stmt_execute($stmt)){
-            echo "<script>alert('New Walk-in Student Registered & Approved Successfully!'); window.location.href='admin/student_details.php';</script>";
+        if(mysqli_stmt_num_rows($check_stmt) > 0){
+            echo "<script>alert('Error: A student with this NIC already exists in pending applications!');</script>";
+            mysqli_stmt_close($check_stmt);
         } else {
-            echo "<script>alert('Error Registering: " . mysqli_error($con) . "');</script>";
+            mysqli_stmt_close($check_stmt);
+            
+            $password = password_hash('1234', PASSWORD_DEFAULT); // Default password for offline users
+            $status = 'pending'; // CHANGED: Set to pending, not approved
+            
+            // Admin creates new student -> Goes to onlineapplication (pending approval)
+            $sql = "INSERT INTO onlineapplication (name, dob, age, nic, username, gender, address, phone_number, email, password, status, reg_date, classofvehicle, doc_nic, doc_address)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    
+            $stmt = mysqli_prepare($con, $sql);
+            // Set doc fields to NULL
+            $doc_nic = NULL;
+            $doc_address = NULL;
+            mysqli_stmt_bind_param($stmt, "sssssssssssssss", $name, $dob, $age, $nic, $username, $gender, $address, $phone_number, $email, $password, $status, $reg_date, $classofvehicle, $doc_nic, $doc_address);
+            
+            if(mysqli_stmt_execute($stmt)){
+                echo "<script>alert('Walk-in Student Registered Successfully! Status: Pending Approval. Go to Pending Approvals to approve.'); window.location.href='admin/pending_approvals.php';</script>";
+            } else {
+                echo "<script>alert('Error Registering: " . mysqli_error($con) . "');</script>";
+            }
         }
     }
     }
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -112,14 +137,14 @@ if(isset($_POST['register_btn'])){
 <div class="container my-5">
     
     <!-- SEARCH BOX -->
-    <div class="card mb-4 shadow border-primary">
-        <div class="card-header bg-primary text-white">
+    <div class="card mb-4 shadow" style="border-color: #0f3460;">
+        <div class="card-header text-white" style="background-color: #0f3460;">
             <h5 class="mb-0">🔍 Admin Search (Find Student by NIC)</h5>
         </div>
         <div class="card-body">
             <form method="POST" class="d-flex gap-2">
                 <input type="text" name="search_nic" class="form-control" placeholder="Enter NIC Number" value="<?php echo $search_nic; ?>" required>
-                <button type="submit" name="search_nic_btn" class="btn btn-dark">Search & Auto-fill</button>
+                <button type="submit" name="search_nic_btn" class="btn btn-solid-navy">Search</button>
             </form>
         </div>
     </div>
@@ -143,7 +168,7 @@ if(isset($_POST['register_btn'])){
 
             <form action="registration.php" method="POST" enctype="multipart/form-data">
                 <!-- Hidden ID field -->
-                <input type="hidden" name="index" value="<?php echo $student['index'] ?? ''; ?>">
+                <input type="hidden" name="index" value="<?php echo $student['app_id'] ?? $student['index'] ?? ''; ?>">
 
                 <div class="row g-3">
                    
@@ -166,6 +191,7 @@ if(isset($_POST['register_btn'])){
                          <label class="form-label">National ID Card (NIC)</label>
                         <input type="text" class="form-control" name="nic" value="<?php echo $student['nic'] ?? ''; ?>" required>
                     </div>
+
                     
                     <div class="col-12">
                         <label class="form-label d-block">Gender</label>
@@ -223,22 +249,19 @@ if(isset($_POST['register_btn'])){
                         <input type="date" class="form-control" name="medical_date" value="<?php echo $student['medical_date'] ?? ''; ?>" required>
                     </div>
 
+                    <div class="col-md-6">
+                        <label class="form-label">Learner Permit Number (L-Board No)</label>
+                        <input type="text" class="form-control" name="learner_permit_no" value="<?php echo $student['learner_permit_no'] ?? ''; ?>" placeholder="Enter Permit No.">
+                    </div>
+
+                    <!--
                     <div class="col-12 mt-3">
                         <div class="p-3 bg-light border rounded">
                             <h6>Uploaded Documents (Preview)</h6>
-                            <?php if(!empty($student['doc_nic'])): ?>
-                                <a href="<?php echo $student['doc_nic']; ?>" target="_blank" class="btn btn-sm btn-outline-primary">View NIC</a>
-                            <?php else: ?>
-                                <span class="text-muted small">No NIC Uploaded</span>
-                            <?php endif; ?>
-                            
-                            <?php if(!empty($student['doc_address'])): ?>
-                                <a href="<?php echo $student['doc_address']; ?>" target="_blank" class="btn btn-sm btn-outline-primary ms-2">View Address Proof</a>
-                            <?php else: ?>
-                                <span class="text-muted small ms-2">No Address Proof</span>
-                            <?php endif; ?>
+                             ... (Hidden) ...
                         </div>
                     </div>
+                    -->
 
                 </div>
 
@@ -247,7 +270,7 @@ if(isset($_POST['register_btn'])){
                         <a href="admin/pending_approvals.php" class="btn btn-solid-navy w-100 py-2">Cancel</a>
                     </div>
                     <div class="col-md-6 mb-2">
-                        <button type="submit" class="btn btn-success w-100 py-2" name="register_btn">Approve & Save</button>
+                        <button type="submit" class="btn btn-solid-navy w-100 py-2" name="register_btn">Save</button>
                     </div>
                 </div>
             </form>
