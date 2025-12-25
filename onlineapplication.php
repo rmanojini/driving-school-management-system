@@ -267,7 +267,7 @@
             if (mysqli_stmt_execute($stmt)) {
                  // Send Email
                  send_admin_notification($name, $email, $phone_number);
-                 echo "<script>alert('Data Successfully saved! Please wait for approval. Use your NIC as Username for login.'); window.location.href='index.html';</script>";
+                 echo "<script>alert('Data Successfully saved! Please wait for approval. Use your NIC as Username for login.'); window.location.href='onlineapplication.php';</script>";
             } else {
                  echo "<script>alert('Data not saved: " . mysqli_error($con) . "');</script>";
             }

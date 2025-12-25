@@ -23,38 +23,55 @@ include 'includes/connection.php';
 
         <?php
         if(isset($_POST['login'])){
-            $username = mysqli_real_escape_string($con, $_POST['username']);
-            $password = $_POST['password'];
+            include 'includes/rate_limiter.php'; // Include rate limiter
 
-            // Using prepared statement for security
-            // Changed lookup to match 'username' column
-            $stmt = mysqli_prepare($con, "SELECT * FROM registration WHERE username = ?");
-            mysqli_stmt_bind_param($stmt, "s", $username);
-            mysqli_stmt_execute($stmt);
-            $result = mysqli_stmt_get_result($stmt);
-            
-            if($row = mysqli_fetch_assoc($result)){
-                // Verify password
-                if(password_verify($password, $row['password'])){
-                    // Check status
-                    if($row['status'] == 'approved'){
-                        $_SESSION['student_email'] = $row['email']; // Keep email in session just in case
-                        $_SESSION['student_username'] = $row['username']; // Add username to session
-                        $_SESSION['student_name'] = $row['name'];
-                        header("Location: student_dashboard.php");
-                        exit();
-                    } elseif($row['status'] == 'pending'){
-                        echo "<p class='alert alert-warning' style='color: orange; font-weight: bold;'>Your account is pending approval by the admin.</p>";
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $limit = 5; // 5 attempts allowed
+            $window = 900; // 15 minutes
+
+            // 1. Check Rate Limit
+            if(is_rate_limited($con, $ip, 'student_login', $limit, $window)){
+                echo "<p class='alert alert-danger' style='color: red; font-weight: bold;'>Too many login attempts. Please try again in 15 minutes.</p>";
+            } else {
+                $username = mysqli_real_escape_string($con, $_POST['username']);
+                $password = $_POST['password'];
+
+                $stmt = mysqli_prepare($con, "SELECT * FROM registration WHERE username = ?");
+                mysqli_stmt_bind_param($stmt, "s", $username);
+                mysqli_stmt_execute($stmt);
+                $result = mysqli_stmt_get_result($stmt);
+                
+                $login_success = false;
+
+                if($row = mysqli_fetch_assoc($result)){
+                    if(password_verify($password, $row['password'])){
+                        if($row['status'] == 'approved'){
+                            $login_success = true;
+                            $_SESSION['student_email'] = $row['email'];
+                            $_SESSION['student_username'] = $row['username'];
+                            $_SESSION['student_name'] = $row['name'];
+                            header("Location: student_dashboard.php");
+                            exit();
+                        } elseif($row['status'] == 'pending'){
+                            echo "<p class='alert alert-warning' style='color: orange; font-weight: bold;'>Your account is pending approval by the admin.</p>";
+                        } else {
+                            echo "<p class='alert alert-danger' style='color: red; font-weight: bold;'>Your account has been rejected. Please contact support.</p>";
+                        }
                     } else {
-                        echo "<p class='alert alert-danger' style='color: red; font-weight: bold;'>Your account has been rejected. Please contact support.</p>";
+                        // Password Incorrect
+                         echo "<p class='alert alert-danger' style='color: red; font-weight: bold;'>Invalid Password.</p>";
                     }
                 } else {
-                    echo "<p class='alert alert-danger' style='color: red; font-weight: bold;'>Invalid Password.</p>";
+                    // Username Not Found
+                    echo "<p class='alert alert-danger' style='color: red; font-weight: bold;'>Username not found.</p>";
                 }
-            } else {
-                echo "<p class='alert alert-danger' style='color: red; font-weight: bold;'>Username not found.</p>";
+                mysqli_stmt_close($stmt);
+
+                // 2. Log failed attempt if not successful
+                if(!$login_success){
+                    log_rate_limit($con, $ip, 'student_login');
+                }
             }
-            mysqli_stmt_close($stmt);
         }
         ?>
 

@@ -6,6 +6,9 @@ require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
+include 'includes/env_loader.php';
+loadEnv(__DIR__ . '/.env');
+
 $mail = new PHPMailer(true);
 
 // 🔍 Enable debug (VERY IMPORTANT)
@@ -16,14 +19,14 @@ try {
     $mail->isSMTP();
 
     // Force IPv4 (Windows fix)
-    $mail->Host = gethostbyname('smtp.gmail.com');
+    $mail->Host = gethostbyname(getenv('SMTP_HOST'));
 
     $mail->SMTPAuth = true;
-    $mail->Username = 'rajaretnammanojini69@gmail.com';
-    $mail->Password = 'wbdajalwbjnxccen'; // 16-char APP PASSWORD
+    $mail->Username = getenv('SMTP_USER');
+    $mail->Password = getenv('SMTP_PASS'); // 16-char APP PASSWORD
 
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
+    $mail->Port = getenv('SMTP_PORT');
 
     // SSL fix for Windows
     $mail->SMTPOptions = [
@@ -34,7 +37,7 @@ try {
         ],
     ];
 
-    $mail->setFrom('rajaretnammanojini69@gmail.com', 'XAMPP Test');
+    $mail->setFrom(getenv('SMTP_USER'), 'XAMPP Test');
     $mail->addAddress('rmanojini19@gmail.com');
 
     $mail->isHTML(true);

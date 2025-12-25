@@ -1,0 +1,11 @@
+# Credentials
+.env
+.env.local
+
+# Dependency directories
+/vendor
+/node_modules
+
+# IDEs
+.vscode/
+.idea/

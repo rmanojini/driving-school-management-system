@@ -76,12 +76,12 @@ if(isset($_GET['id'])){
                     // SMTP configuration (from send_mail.php)
                     $mail->isSMTP();
                     // Force IPv4 (Windows fix)
-                    $mail->Host = gethostbyname('smtp.gmail.com');
+                    $mail->Host = gethostbyname(getenv('SMTP_HOST'));
                     $mail->SMTPAuth = true;
-                    $mail->Username = 'rajaretnammanojini69@gmail.com';
-                    $mail->Password = 'wbdajalwbjnxccen'; // 16-char APP PASSWORD
+                    $mail->Username = getenv('SMTP_USER');
+                    $mail->Password = getenv('SMTP_PASS'); // 16-char APP PASSWORD
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                    $mail->Port = 587;
+                    $mail->Port = getenv('SMTP_PORT');
 
                     // SSL fix for Windows
                     $mail->SMTPOptions = [
@@ -93,7 +93,7 @@ if(isset($_GET['id'])){
                     ];
 
                     // Sender
-                    $mail->setFrom('rajaretnammanojini69@gmail.com', 'Driving School Admin');
+                    $mail->setFrom(getenv('SMTP_USER'), 'Driving School Admin');
                     
                     // Receiver
                     $mail->addAddress($email, $name);

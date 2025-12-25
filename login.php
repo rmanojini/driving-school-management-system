@@ -38,28 +38,39 @@ session_start();
         <?php
         if(isset($_POST['submit'])){
             include 'includes/connection.php';
+            include 'includes/rate_limiter.php'; // Include rate limiter
 
-            $un=$_POST['username'];
-            $pw=$_POST['password'];
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $limit = 5; // 5 attempts
+            $window = 900; // 15 minutes
 
-            $sql="select * from admin where username='$un' and password='$pw'";
+            // 1. Check Rate Limit
+            if(is_rate_limited($con, $ip, 'admin_login', $limit, $window)){
+                echo "<p class='alert alert-danger text-center mt-3'><b>Too many login attempts. Please try again later (15 mins).</b></p>";
+            } else {
+                
+                $un = mysqli_real_escape_string($con, $_POST['username']);
+                $pw = mysqli_real_escape_string($con, $_POST['password']);
 
-            $res=mysqli_query($con,$sql);
+                $sql="select * from admin where username='$un' and password='$pw'";
+                $res=mysqli_query($con,$sql);
 
-            if (mysqli_num_rows($res)==0) {
+                if (mysqli_num_rows($res)==0) {
+                    
+                    // 2. Log failed attempt
+                    log_rate_limit($con, $ip, 'admin_login');
+                    
+                    echo "<p class='alert alert-danger text-center mt-3'><b>Sorry, user name or pass word wrong....Try again</b></p>";
+                }
+                else{
+                    $row = mysqli_fetch_assoc($res);
+                    // Try to get a name, otherwise fallback to username
+                    $admin_name = isset($row['name']) ? $row['name'] : $un;
+                    $_SESSION['admin_name'] = $admin_name;
+                    $_SESSION['xusername'] = $un;
 
-                echo "<p class='alert alert-danger text-center mt-3'><b>Sorry, user name or pass word wrong....Try again</b></p>";
-
-            }
-            else{
-                $row = mysqli_fetch_assoc($res);
-                // Try to get a name, otherwise fallback to username
-                $admin_name = isset($row['name']) ? $row['name'] : $un;
-                $_SESSION['admin_name'] = $admin_name;
-                $_SESSION['xusername'] = $un;
-
-                echo "<script>window.location.href='dashboard.php';</script>";
-
+                    echo "<script>window.location.href='dashboard.php';</script>";
+                }
             }
         }
 
