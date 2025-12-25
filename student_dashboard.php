@@ -163,22 +163,22 @@ $student = mysqli_fetch_assoc($result);
         <!-- Quick Actions -->
         <h3 style="color: white; margin-bottom: 20px; font-size: 24px;"><i class="fas fa-bolt"></i> Quick Actions</h3>
         <div class="action-grid">
-            <a href="#" class="action-card">
+            <a href="student_schedule.php" class="action-card">
                 <i class="fas fa-calendar-alt"></i>
                 <h4>My Schedule</h4>
                 <p>View upcoming lessons</p>
             </a>
-            <a href="#" class="action-card">
+            <a href="student_payments.php" class="action-card">
                 <i class="fas fa-credit-card"></i>
                 <h4>Payments</h4>
                 <p>Check payment history</p>
             </a>
-            <a href="#" class="action-card">
-                <i class="fas fa-file-alt"></i>
-                <h4>Documents</h4>
-                <p>View uploaded documents</p>
+            <a href="student_results.php" class="action-card">
+                <i class="fas fa-poll-h"></i>
+                <h4>Exam Results</h4>
+                <p>View your scores</p>
             </a>
-            <a href="#" class="action-card">
+            <a href="change_password.php" class="action-card">
                 <i class="fas fa-key"></i>
                 <h4>Change Password</h4>
                 <p>Update your password</p>

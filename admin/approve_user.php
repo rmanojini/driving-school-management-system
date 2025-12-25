@@ -1,6 +1,13 @@
 <?php
 include '../includes/connection.php';
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../PHPMailer/src/Exception.php';
+require '../PHPMailer/src/PHPMailer.php';
+require '../PHPMailer/src/SMTP.php';
+
 if(isset($_GET['id'])){
     $app_id = $_GET['id'];
     
@@ -62,8 +69,56 @@ if(isset($_GET['id'])){
                 $stmt_delete = mysqli_prepare($con, $delete_sql);
                 mysqli_stmt_bind_param($stmt_delete, "i", $app_id);
                 mysqli_stmt_execute($stmt_delete);
+
+                // --- SEND EMAIL NOTIFICATION ---
+                $mail = new PHPMailer(true);
+                try {
+                    // SMTP configuration (from send_mail.php)
+                    $mail->isSMTP();
+                    // Force IPv4 (Windows fix)
+                    $mail->Host = gethostbyname('smtp.gmail.com');
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'rajaretnammanojini69@gmail.com';
+                    $mail->Password = 'wbdajalwbjnxccen'; // 16-char APP PASSWORD
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->Port = 587;
+
+                    // SSL fix for Windows
+                    $mail->SMTPOptions = [
+                        'ssl' => [
+                            'verify_peer' => false,
+                            'verify_peer_name' => false,
+                            'allow_self_signed' => true,
+                        ],
+                    ];
+
+                    // Sender
+                    $mail->setFrom('rajaretnammanojini69@gmail.com', 'Driving School Admin');
+                    
+                    // Receiver
+                    $mail->addAddress($email, $name);
+
+                    // Content
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Driving School Application Approved';
+                    $mail->Body    = "
+                        <h3>Congratulations, $name!</h3>
+                        <p>Your application for the Driving School has been <b>APPROVED</b>.</p>
+                        <p>You can now log in to the student portal using your credentials.</p>
+                        <p><b>Username:</b> $username<br>
+                        <b>Password:</b> (The one you registered with)</p>
+                        <br>
+                        <p>Regards,<br>Driving School Management</p>
+                    ";
+
+                    $mail->send();
+                    $mail_msg = "Approval Email Sent Successfully!";
+                } catch (Exception $e) {
+                    $mail_msg = "However, Email sending failed: " . $mail->ErrorInfo;
+                }
+                // -------------------------------
                 
-                echo "<script>alert('Student Approved & Moved to Main Database Successfully! Application removed from pending list.'); window.location.href='pending_approvals.php';</script>";
+                echo "<script>alert('Student Approved & Moved to Main Database Successfully! $mail_msg'); window.location.href='pending_approvals.php';</script>";
             } else {
                  echo "Error Inserting into Main DB: " . mysqli_error($con);
             }
